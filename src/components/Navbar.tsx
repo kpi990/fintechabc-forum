@@ -20,12 +20,18 @@ export default async function Navbar() {
 
   return (
     <nav className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-2.5 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-indigo-400 text-sm font-bold text-white">
+          {/* TODO: swap for the real logo image once uploaded to /public/logo.png */}
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-sm font-bold text-white shadow-sm">
             f
           </span>
-          <span className="font-semibold tracking-tight text-slate-900">fintechabc</span>
+          <div className="leading-tight">
+            <div className="font-semibold tracking-tight text-slate-900">fintechabc</div>
+            <div className="hidden text-[10px] uppercase tracking-wider text-slate-400 sm:block">
+              Discuss · Share · Grow
+            </div>
+          </div>
         </Link>
         <div className="flex items-center gap-4 text-sm">
           {profile ? (
@@ -47,7 +53,7 @@ export default async function Navbar() {
               </Link>
               <Link
                 href="/signup"
-                className="rounded-lg bg-indigo-600 px-3.5 py-1.5 font-medium text-white shadow-sm transition hover:bg-indigo-500"
+                className="rounded-lg bg-violet-600 px-3.5 py-1.5 font-medium text-white shadow-sm transition hover:bg-violet-500"
               >
                 Sign up
               </Link>

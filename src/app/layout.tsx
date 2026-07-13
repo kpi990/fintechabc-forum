@@ -30,8 +30,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
         <Navbar />
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">{children}</main>
-        <footer className="border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 sm:px-6">{children}</main>
+        <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-400">
           fintechabc — community discussion, not financial advice.
         </footer>
       </body>

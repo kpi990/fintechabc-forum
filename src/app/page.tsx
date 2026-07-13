@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import NewsFeed from "@/components/NewsFeed";
 import type { Board } from "@/lib/types";
 
 export default async function HomePage() {
@@ -11,16 +12,18 @@ export default async function HomePage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Boards</h1>
-        <p className="mt-1 text-sm text-slate-500">Pick a topic to join the conversation.</p>
+      <NewsFeed />
+
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold tracking-tight text-slate-900">Boards</h1>
+        <p className="mt-0.5 text-sm text-slate-500">Pick a topic to join the conversation.</p>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {(boards as Board[] | null)?.map((board) => (
           <Link
             key={board.id}
             href={`/board/${board.slug}`}
-            className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
             <div>
               <div className="flex items-center gap-2 font-medium text-slate-900">
@@ -35,7 +38,7 @@ export default async function HomePage() {
                 <p className="mt-1 text-sm text-slate-500">{board.description}</p>
               )}
             </div>
-            <span className="text-slate-300 transition group-hover:text-indigo-500">→</span>
+            <span className="text-slate-300 transition group-hover:text-violet-500">→</span>
           </Link>
         ))}
         {!boards?.length && (

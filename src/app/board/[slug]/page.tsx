@@ -46,7 +46,7 @@ export default async function BoardPage({
         </div>
         <Link
           href={`/board/${slug}/new`}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500"
+          className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-violet-500"
         >
           New post
         </Link>
@@ -62,7 +62,7 @@ export default async function BoardPage({
             <div className="flex-1">
               <Link
                 href={`/post/${post.id}`}
-                className="font-medium text-slate-900 transition hover:text-indigo-600"
+                className="font-medium text-slate-900 transition hover:text-violet-600"
               >
                 {post.title}
               </Link>

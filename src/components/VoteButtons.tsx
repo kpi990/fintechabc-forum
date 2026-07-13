@@ -37,7 +37,7 @@ export default function VoteButtons({ targetType, targetId, initialScore }: Prop
         onClick={() => vote(1)}
         disabled={isPending}
         aria-label="Upvote"
-        className="rounded p-0.5 text-slate-400 transition hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-50"
+        className="rounded p-0.5 text-slate-400 transition hover:bg-violet-50 hover:text-violet-600 disabled:opacity-50"
       >
         ▲
       </button>

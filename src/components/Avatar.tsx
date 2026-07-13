@@ -12,7 +12,7 @@ export default function Avatar({
 
   return (
     <div
-      className={`flex ${dims} shrink-0 items-center justify-center rounded-full bg-indigo-50 font-semibold text-indigo-700 ring-1 ring-indigo-100`}
+      className={`flex ${dims} shrink-0 items-center justify-center rounded-full bg-violet-50 font-semibold text-violet-700 ring-1 ring-violet-100`}
     >
       {initials}
     </div>
