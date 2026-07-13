@@ -1,4 +1,5 @@
 import VoteButtons from "@/components/VoteButtons";
+import Avatar from "@/components/Avatar";
 import type { Comment } from "@/lib/types";
 
 type Props = {
@@ -12,16 +13,21 @@ export default function CommentThread({ comments, parentId, depth = 0 }: Props) 
   if (!children.length) return null;
 
   return (
-    <div className={depth > 0 ? "ml-6 border-l border-gray-800 pl-4" : ""}>
+    <div className={depth > 0 ? "ml-5 border-l border-slate-200 pl-4" : "space-y-4"}>
       {children.map((comment) => (
-        <div key={comment.id} className="mb-4 flex gap-2">
+        <div key={comment.id} className="mb-4 flex gap-3 last:mb-0">
           <VoteButtons targetType="comment" targetId={comment.id} initialScore={comment.score} />
-          <div className="flex-1">
-            <p className="text-xs text-gray-500">
-              u/{comment.profiles?.username ?? "[deleted]"}
-            </p>
-            <p className="text-sm text-gray-200">
-              {comment.is_removed ? <em className="text-gray-600">[removed]</em> : comment.body}
+          <div className="flex-1 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+            <div className="mb-1 flex items-center gap-1.5 text-xs text-slate-500">
+              <Avatar username={comment.profiles?.username ?? "?"} />
+              <span>{comment.profiles?.username ?? "[deleted]"}</span>
+            </div>
+            <p className="text-sm text-slate-700">
+              {comment.is_removed ? (
+                <em className="text-slate-400">[removed]</em>
+              ) : (
+                comment.body
+              )}
             </p>
             <CommentThread comments={comments} parentId={comment.id} depth={depth + 1} />
           </div>

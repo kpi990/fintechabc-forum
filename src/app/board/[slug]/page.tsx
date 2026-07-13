@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
+import Avatar from "@/components/Avatar";
 import type { Board, Post } from "@/lib/types";
 
 export default async function BoardPage({
@@ -31,12 +32,21 @@ export default async function BoardPage({
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">{board.name}</h1>
-          {board.description && <p className="text-gray-400">{board.description}</p>}
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+              {board.name}
+            </h1>
+            {board.is_paid && (
+              <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                Paid
+              </span>
+            )}
+          </div>
+          {board.description && <p className="mt-1 text-sm text-slate-500">{board.description}</p>}
         </div>
         <Link
           href={`/board/${slug}/new`}
-          className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500"
         >
           New post
         </Link>
@@ -44,19 +54,30 @@ export default async function BoardPage({
 
       <div className="space-y-3">
         {(posts as Post[] | null)?.map((post) => (
-          <div key={post.id} className="flex gap-3 rounded-lg border border-gray-800 bg-gray-900 p-4">
+          <div
+            key={post.id}
+            className="flex gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+          >
             <VoteButtons targetType="post" targetId={post.id} initialScore={post.score} />
             <div className="flex-1">
-              <Link href={`/post/${post.id}`} className="font-medium hover:underline">
+              <Link
+                href={`/post/${post.id}`}
+                className="font-medium text-slate-900 transition hover:text-indigo-600"
+              >
                 {post.title}
               </Link>
-              <p className="mt-1 text-xs text-gray-500">
-                posted by u/{post.profiles?.username ?? "[deleted]"}
-              </p>
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+                <Avatar username={post.profiles?.username ?? "?"} />
+                <span>{post.profiles?.username ?? "[deleted]"}</span>
+              </div>
             </div>
           </div>
         ))}
-        {!posts?.length && <p className="text-gray-500">No posts yet — be the first.</p>}
+        {!posts?.length && (
+          <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+            No posts yet — be the first.
+          </p>
+        )}
       </div>
     </div>
   );

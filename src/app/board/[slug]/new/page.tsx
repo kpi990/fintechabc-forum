@@ -43,26 +43,33 @@ export default async function NewPostPage({
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-4 text-xl font-semibold">New post in {board.name}</h1>
-      <form action={createPost} className="space-y-4">
+      <h1 className="mb-6 text-xl font-semibold tracking-tight text-slate-900">
+        New post in {board.name}
+      </h1>
+      <form
+        action={createPost}
+        className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
         <div>
-          <label className="mb-1 block text-sm text-gray-400">Title</label>
+          <label className="mb-1.5 block text-sm font-medium text-slate-700">Title</label>
           <input
             name="title"
             required
             maxLength={300}
-            className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-gray-400">Body (optional)</label>
+          <label className="mb-1.5 block text-sm font-medium text-slate-700">
+            Body (optional)
+          </label>
           <textarea
             name="body"
             rows={6}
-            className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </div>
-        <button className="rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-500">
+        <button className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 font-medium text-white shadow-sm transition hover:bg-indigo-500">
           Post
         </button>
       </form>

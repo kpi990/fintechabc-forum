@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
 import CommentThread from "@/components/CommentThread";
+import Avatar from "@/components/Avatar";
 import type { Post, Comment } from "@/lib/types";
 
 export default async function PostPage({
@@ -49,26 +50,32 @@ export default async function PostPage({
 
   return (
     <div>
-      <div className="mb-6 flex gap-3 rounded-lg border border-gray-800 bg-gray-900 p-4">
+      <div className="mb-6 flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <VoteButtons targetType="post" targetId={post.id} initialScore={post.score} />
         <div>
-          <h1 className="text-xl font-semibold">{post.title}</h1>
-          <p className="mb-2 text-xs text-gray-500">
-            posted by u/{post.profiles?.username ?? "[deleted]"}
-          </p>
-          {post.body && <p className="whitespace-pre-wrap text-gray-200">{post.body}</p>}
+          <h1 className="text-xl font-semibold tracking-tight text-slate-900">{post.title}</h1>
+          <div className="mb-3 mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+            <Avatar username={post.profiles?.username ?? "?"} />
+            <span>{post.profiles?.username ?? "[deleted]"}</span>
+          </div>
+          {post.body && (
+            <p className="whitespace-pre-wrap leading-relaxed text-slate-700">{post.body}</p>
+          )}
         </div>
       </div>
 
-      <form action={addComment} className="mb-6 space-y-2">
+      <form
+        action={addComment}
+        className="mb-6 space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+      >
         <textarea
           name="body"
           required
           rows={3}
           placeholder="Add a comment"
-          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
-        <button className="rounded bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-500">
+        <button className="rounded-lg bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500">
           Comment
         </button>
       </form>
