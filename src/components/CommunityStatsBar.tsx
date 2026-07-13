@@ -1,6 +1,6 @@
 import { getCommunityStats } from "@/lib/stats";
 
-export default async function CommunityStatsBar() {
+export default async function CommunityStatsBar({ compact = false }: { compact?: boolean }) {
   const stats = await getCommunityStats();
 
   const items = [
@@ -8,6 +8,24 @@ export default async function CommunityStatsBar() {
     { label: "Discussions this week", value: stats.postsLast7Days },
     { label: "Total posts", value: stats.totalPosts },
   ];
+
+  if (compact) {
+    return (
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Community
+        </h3>
+        <div className="divide-y divide-slate-100">
+          {items.map((item) => (
+            <div key={item.label} className="flex items-center justify-between py-1.5 text-sm">
+              <span className="text-slate-600">{item.label}</span>
+              <span className="font-semibold text-slate-900">{item.value.toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-3 divide-x divide-slate-100 rounded-xl border border-slate-200 bg-white shadow-sm">
