@@ -1,52 +1,79 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import NewsFeed from "@/components/NewsFeed";
-import type { Board } from "@/lib/types";
+import MarketTicker from "@/components/MarketTicker";
+import CommunityStatsBar from "@/components/CommunityStatsBar";
+import TrendingPosts from "@/components/TrendingPosts";
 
-export default async function HomePage() {
-  const supabase = await createClient();
-  const { data: boards } = await supabase
-    .from("boards")
-    .select("*")
-    .order("created_at", { ascending: true });
-
+export default function HomePage() {
   return (
-    <div>
-      <NewsFeed />
-
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold tracking-tight text-slate-900">Boards</h1>
-        <p className="mt-0.5 text-sm text-slate-500">Pick a topic to join the conversation.</p>
-      </div>
-      <div className="space-y-2.5">
-        {(boards as Board[] | null)?.map((board) => (
+    <div className="space-y-10">
+      <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-8 text-white shadow-sm sm:p-10">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-violet-100">
+          Discuss · Share · Grow
+        </p>
+        <h1 className="max-w-lg text-3xl font-semibold tracking-tight sm:text-4xl">
+          Where India talks crypto, markets, and money.
+        </h1>
+        <p className="mt-3 max-w-md text-violet-100">
+          Live market data, verified news, and a community built for Indian investors —
+          with global crypto coverage.
+        </p>
+        <div className="mt-6 flex gap-3">
           <Link
-            key={board.id}
-            href={`/board/${board.slug}`}
-            className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            href="/signup"
+            className="rounded-lg bg-white px-5 py-2.5 font-medium text-violet-700 shadow-sm transition hover:bg-violet-50"
           >
-            <div>
-              <div className="flex items-center gap-2 font-medium text-slate-900">
-                {board.name}
-                {board.is_paid && (
-                  <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
-                    Paid
-                  </span>
-                )}
-              </div>
-              {board.description && (
-                <p className="mt-1 text-sm text-slate-500">{board.description}</p>
-              )}
-            </div>
-            <span className="text-slate-300 transition group-hover:text-violet-500">→</span>
+            Join the community
           </Link>
-        ))}
-        {!boards?.length && (
-          <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-            No boards yet. Run <code>schema.sql</code> in Supabase to seed the starter boards.
+          <Link
+            href="/markets"
+            className="rounded-lg border border-white/40 px-5 py-2.5 font-medium text-white transition hover:bg-white/10"
+          >
+            View markets
+          </Link>
+        </div>
+      </section>
+
+      <section>
+        <MarketTicker />
+      </section>
+
+      <section>
+        <CommunityStatsBar />
+      </section>
+
+      <section className="grid gap-6 sm:grid-cols-2">
+        <TrendingPosts />
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Latest verified news
+            </h3>
+            <Link href="/news" className="text-xs font-medium text-violet-600 hover:underline">
+              View all →
+            </Link>
+          </div>
+          <p className="text-sm text-slate-500">
+            Headlines from CoinDesk, Cointelegraph, and Yahoo Finance —{" "}
+            <Link href="/news" className="text-violet-600 hover:underline">
+              see the full feed
+            </Link>
+            .
           </p>
-        )}
-      </div>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center">
+        <h2 className="text-lg font-semibold text-slate-900">Ready to join the conversation?</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Browse community boards on crypto, markets, and personal finance.
+        </p>
+        <Link
+          href="/community"
+          className="mt-4 inline-block rounded-lg bg-violet-600 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-violet-500"
+        >
+          Browse boards
+        </Link>
+      </section>
     </div>
   );
 }

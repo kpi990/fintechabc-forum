@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import Avatar from "@/components/Avatar";
+import LogoIcon from "@/components/LogoIcon";
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/markets", label: "Markets" },
+  { href: "/news", label: "News" },
+  { href: "/community", label: "Community" },
+  { href: "/about", label: "About" },
+];
 
 export default async function Navbar() {
   const supabase = await createClient();
@@ -20,25 +29,31 @@ export default async function Navbar() {
 
   return (
     <nav className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-2.5 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          {/* TODO: swap for the real logo image once uploaded to /public/logo.png */}
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-sm font-bold text-white shadow-sm">
-            f
-          </span>
-          <div className="leading-tight">
-            <div className="font-semibold tracking-tight text-slate-900">fintechabc</div>
-            <div className="hidden text-[10px] uppercase tracking-wider text-slate-400 sm:block">
-              Discuss · Share · Grow
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2.5 sm:px-6">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2">
+            <LogoIcon size={32} />
+            <div className="leading-tight">
+              <div className="font-semibold tracking-tight text-slate-900">fintechabc</div>
+              <div className="hidden text-[10px] uppercase tracking-wider text-slate-400 sm:block">
+                Discuss · Share · Grow
+              </div>
             </div>
+          </Link>
+          <div className="hidden items-center gap-5 text-sm text-slate-600 md:flex">
+            {NAV_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="transition hover:text-violet-600">
+                {link.label}
+              </Link>
+            ))}
           </div>
-        </Link>
+        </div>
         <div className="flex items-center gap-4 text-sm">
           {profile ? (
             <>
               <div className="flex items-center gap-2">
                 <Avatar username={profile.username} />
-                <span className="text-slate-600">{profile.username}</span>
+                <span className="hidden text-slate-600 sm:inline">{profile.username}</span>
               </div>
               <form action="/auth/signout" method="post">
                 <button className="text-slate-400 transition hover:text-slate-700">
@@ -60,6 +75,14 @@ export default async function Navbar() {
             </>
           )}
         </div>
+      </div>
+      {/* Mobile nav row */}
+      <div className="flex gap-4 overflow-x-auto border-t border-slate-100 px-4 py-2 text-sm text-slate-600 md:hidden">
+        {NAV_LINKS.map((link) => (
+          <Link key={link.href} href={link.href} className="whitespace-nowrap transition hover:text-violet-600">
+            {link.label}
+          </Link>
+        ))}
       </div>
     </nav>
   );

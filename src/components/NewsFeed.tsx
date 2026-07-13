@@ -1,20 +1,28 @@
 import { getVerifiedNews } from "@/lib/news";
 import { formatDistanceToNowStrict } from "date-fns";
 
-export default async function NewsFeed() {
-  const news = await getVerifiedNews(6);
+export default async function NewsFeed({
+  limit = 6,
+  showHeader = true,
+}: {
+  limit?: number;
+  showHeader?: boolean;
+}) {
+  const news = await getVerifiedNews(limit);
   if (!news.length) return null;
 
   return (
     <div className="mb-8">
-      <div className="mb-3 flex items-center gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-          Verified news
-        </h2>
-        <span className="inline-flex items-center rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-700 ring-1 ring-inset ring-violet-600/20">
-          Live feed
-        </span>
-      </div>
+      {showHeader && (
+        <div className="mb-3 flex items-center gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Verified news
+          </h2>
+          <span className="inline-flex items-center rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-700 ring-1 ring-inset ring-violet-600/20">
+            Live feed
+          </span>
+        </div>
+      )}
       <div className="grid gap-3 sm:grid-cols-2">
         {news.map((item) => (
           <a

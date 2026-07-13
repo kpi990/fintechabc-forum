@@ -1,8 +1,3 @@
-// Pulls headlines from a fixed list of reputable finance/crypto outlets via
-// their public RSS feeds. We only ever show a headline + short snippet + a
-// link back to the original source — never the full article text — both
-// for copyright reasons and because we're not the publisher of record.
-
 export type NewsItem = {
   title: string;
   link: string;
@@ -62,6 +57,7 @@ export async function getVerifiedNews(limit = 6): Promise<NewsItem[]> {
       const res = await fetch(url, {
         headers: { "User-Agent": "Mozilla/5.0 (compatible; fintechabc-bot/1.0)" },
         next: { revalidate: 1800 },
+        signal: AbortSignal.timeout(8000),
       });
       if (!res.ok) return [];
       const xml = await res.text();
