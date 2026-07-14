@@ -11,9 +11,6 @@ const NAV_LINKS = [
   { href: "/about", label: "About" },
 ];
 
-// Desktop-only fixed left sidebar. Mobile keeps the compact top bar
-// (see MobileTopBar.tsx) — a slide-out drawer wasn't worth the added
-// client-side complexity for five nav links.
 export default async function Sidebar() {
   const supabase = await createClient();
   const {
@@ -32,11 +29,14 @@ export default async function Sidebar() {
 
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-slate-200 bg-white md:flex">
-      <Link href="/" className="flex items-center gap-2 px-5 py-5">
-        <LogoIcon size={32} />
+      <Link href="/" className="flex items-center gap-2.5 px-5 py-5">
+        <LogoIcon size={34} />
         <div className="leading-tight">
-          <div className="font-semibold tracking-tight text-slate-900">fintechabc</div>
-          <div className="text-[10px] uppercase tracking-wider text-slate-400">
+          <div className="text-[15px] font-semibold tracking-tight">
+            <span className="text-slate-900">fintech</span>
+            <span className="text-violet-600">abc</span>
+          </div>
+          <div className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">
             Discuss · Share · Grow
           </div>
         </div>

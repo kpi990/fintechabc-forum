@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import MobileTopBar from "@/components/MobileTopBar";
+import LogoIcon from "@/components/LogoIcon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,25 @@ export const metadata: Metadata = {
   },
 };
 
+const FOOTER_COLUMNS: { heading: string; links: { href: string; label: string }[] }[] = [
+  {
+    heading: "Explore",
+    links: [
+      { href: "/markets", label: "Markets" },
+      { href: "/news", label: "News" },
+      { href: "/community", label: "Community" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "/signup", label: "Join" },
+      { href: "/login", label: "Log in" },
+    ],
+  },
+];
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,6 +86,7 @@ export default function RootLayout({
     url: SITE_URL,
     description: SITE_DESCRIPTION,
   };
+  const year = new Date().getFullYear();
 
   return (
     <html
@@ -85,16 +106,54 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-1 flex-col">
             <MobileTopBar />
             <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">{children}</main>
+
             <footer className="border-t border-slate-200 bg-white">
-              <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-                <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-                  <div className="text-sm font-semibold text-slate-900">fintechabc</div>
-                  <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-500"><Link href="/markets" className="hover:text-violet-600">Markets</Link><Link href="/news" className="hover:text-violet-600">News</Link><Link href="/community" className="hover:text-violet-600">Community</Link><Link href="/about" className="hover:text-violet-600">About</Link></div>
+              <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+                <div className="grid gap-8 sm:grid-cols-[2fr_1fr_1fr]">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <LogoIcon size={28} />
+                      <span className="text-[15px] font-semibold tracking-tight">
+                        <span className="text-slate-900">fintech</span>
+                        <span className="text-violet-600">abc</span>
+                      </span>
+                    </div>
+                    <p className="mt-3 max-w-xs text-sm text-slate-500">
+                      A community for crypto and financial markets — built for Indian investors,
+                      with global crypto coverage.
+                    </p>
+                  </div>
+
+                  {FOOTER_COLUMNS.map((col) => (
+                    <div key={col.heading}>
+                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        {col.heading}
+                      </div>
+                      <ul className="mt-3 space-y-2">
+                        {col.links.map((link) => (
+                          <li key={link.href}>
+                            <Link
+                              href={link.href}
+                              className="text-sm text-slate-600 transition hover:text-violet-600"
+                            >
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
-                <p className="mt-4 text-center text-xs text-slate-400">
-                  fintechabc — community discussion and general market information. Not financial,
-                  investment, or insurance advice.
-                </p>
+
+                <div className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+                  <span>© {year} fintechabc. Not financial, investment, or insurance advice.</span>
+                  <span>
+                    Contact:{" "}
+                    <a href="mailto:hello@fintechabc.com" className="hover:text-violet-600 hover:underline">
+                      hello@fintechabc.com
+                    </a>
+                  </span>
+                </div>
               </div>
             </footer>
           </div>

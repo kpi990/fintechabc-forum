@@ -4,11 +4,12 @@ import CommunityStatsBar from "@/components/CommunityStatsBar";
 import TrendingPosts from "@/components/TrendingPosts";
 import CryptoMovers from "@/components/CryptoMovers";
 import IndiaSnapshotCard from "@/components/IndiaSnapshotCard";
+import NextIPOCard from "@/components/NextIPOCard";
 import NewsFeed from "@/components/NewsFeed";
 
 export default function HomePage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm sm:p-7">
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-violet-100">
           Discuss · Share · Grow
@@ -38,37 +39,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* India first: snapshot up top, before global crypto */}
-      <section>
-        <div className="mb-2 flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            India markets
-          </h2>
-        </div>
-        <IndiaSnapshotCard />
-      </section>
-
-      {/* Global crypto, second */}
-      <section>
-        <div className="mb-2 flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Global crypto — live
-          </h2>
-        </div>
-        <MarketTicker />
-        <a
-          href="https://www.coingecko.com/en/api"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-1.5 inline-block text-xs text-slate-400 hover:underline"
-        >
-          Source: CoinGecko (live) ↗
-        </a>
-      </section>
-
-      {/* Core of the product: real community discussions */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+      {/* Core of the product + India-first market data, in one balanced grid
+          so the right rail isn't left empty under a much taller left column. */}
+      <div className="grid gap-5 lg:grid-cols-3">
+        <div className="space-y-5 lg:col-span-2">
           <TrendingPosts />
 
           <div>
@@ -83,10 +57,35 @@ export default function HomePage() {
             <NewsFeed limit={3} showHeader={false} />
           </div>
 
-          <CryptoMovers limit={4} />
+          <div>
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                Global crypto — live
+              </h3>
+              <a
+                href="https://www.coingecko.com/en/api"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-slate-400 hover:underline"
+              >
+                Source: CoinGecko ↗
+              </a>
+            </div>
+            <MarketTicker />
+            <div className="mt-4">
+              <CryptoMovers limit={4} />
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
+          <div>
+            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+              India markets
+            </h3>
+            <IndiaSnapshotCard />
+          </div>
+          <NextIPOCard />
           <CommunityStatsBar compact />
         </div>
       </div>

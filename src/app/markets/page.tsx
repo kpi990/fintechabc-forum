@@ -35,15 +35,11 @@ function SourceLink({ label, url }: { label: string; url: string }) {
 
 export default function MarketsPage() {
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Markets</h1>
         <p className="mt-1 text-sm text-slate-500">
-          India data first, global crypto second. The India sections below are a
-          research snapshot, re-verified as of {ASOF_DATE} — each section links to a live
-          source so you can check the current number yourself. There is no free real-time
-          feed for NSE indices, IPO calendars, or bank rates, so we don't claim to be live
-          where we aren't. Crypto prices further down are genuinely live.
+          India first, global crypto second — every section links to its live source.
         </p>
       </div>
 
@@ -195,10 +191,7 @@ export default function MarketsPage() {
           </table>
         </div>
         <p className="mt-2 text-xs text-slate-400">
-          Advertised "from" rates require a strong credit score and vary by loan amount and
-          employment type — treat these as reference points, not a quote. Rates are floating
-          and linked to the RBI repo rate; click the source link above for the current figure
-          directly from the comparison site, or check with the bank.
+          Reference rates only, not a quote — actual rate depends on credit score and loan amount.
         </p>
       </section>
 
@@ -238,10 +231,7 @@ export default function MarketsPage() {
           </table>
         </div>
         <p className="mt-2 text-xs text-slate-400">
-          We deliberately don't quote claim-settlement-ratio numbers here — different sources
-          reported inconsistent figures per insurer when we last checked, and we'd rather link
-          you to a live comparison tool (above) than publish a number we can't stand behind.
-          Informational only — not personalized insurance advice.
+          Informational only, not personalized insurance advice — see the source link for current claim-settlement ratios.
         </p>
       </section>
 
