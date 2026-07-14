@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import type { CoinPrice } from "@/lib/market";
 
-const POLL_MS = 30_000; // refresh from /api/ticker every 30s
+const POLL_MS = 30_000;
 
 function TickerItem({ coin }: { coin: CoinPrice }) {
   const isUp = coin.changePct24h >= 0;
   return (
     <div className="flex shrink-0 items-center gap-2 px-4 py-3">
+      {coin.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={coin.image} alt="" width={16} height={16} className="rounded-full" />
+      )}
       <span className="text-xs font-semibold text-slate-500">{coin.symbol}</span>
       <span className="text-sm font-medium text-slate-900">
         $
@@ -53,8 +57,6 @@ export default function TickerScroller({ initialCoins }: { initialCoins: CoinPri
 
   if (!coins.length) return null;
 
-  // Render the row twice back-to-back so the CSS animation can loop seamlessly
-  // from -0% to -50% and restart without a visible jump.
   return (
     <div
       className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"

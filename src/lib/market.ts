@@ -1,5 +1,7 @@
 // Live global crypto data via CoinGecko's free public API (no key required).
 // This is genuinely live — unlike the India markets snapshot in indiaMarkets.ts.
+// sparkline_in_7d is real 7-day hourly price history from CoinGecko, used to
+// draw the trend lines in the UI — we don't fabricate any price history.
 
 export type CoinPrice = {
   id: string;
@@ -7,10 +9,12 @@ export type CoinPrice = {
   name: string;
   price: number;
   changePct24h: number;
+  image: string;
+  sparkline: number[];
 };
 
 const COINGECKO_MARKETS =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&price_change_percentage=24h";
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&price_change_percentage=24h&sparkline=true";
 
 async function fetchTopCoins(): Promise<CoinPrice[]> {
   try {
@@ -27,6 +31,8 @@ async function fetchTopCoins(): Promise<CoinPrice[]> {
       name: c.name,
       price: c.current_price,
       changePct24h: c.price_change_percentage_24h ?? 0,
+      image: c.image ?? "",
+      sparkline: Array.isArray(c.sparkline_in_7d?.price) ? c.sparkline_in_7d.price : [],
     }));
   } catch {
     return [];

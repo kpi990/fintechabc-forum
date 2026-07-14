@@ -1,5 +1,6 @@
 import MarketTicker from "@/components/MarketTicker";
 import CryptoMovers from "@/components/CryptoMovers";
+import BrandBadge from "@/components/BrandBadge";
 import {
   ASOF_DATE,
   upcomingIPOs,
@@ -104,7 +105,12 @@ export default function MarketsPage() {
             <tbody className="divide-y divide-slate-100">
               {upcomingIPOs.map((ipo) => (
                 <tr key={ipo.name}>
-                  <td className="px-4 py-3 font-medium text-slate-900">{ipo.name}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900">
+                    <div className="flex items-center gap-2">
+                      <BrandBadge name={ipo.name} size={24} />
+                      {ipo.name}
+                    </div>
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -148,7 +154,12 @@ export default function MarketsPage() {
             <tbody className="divide-y divide-slate-100">
               {homeLoanRates.map((row) => (
                 <tr key={row.bank}>
-                  <td className="px-4 py-3 font-medium text-slate-900">{row.bank}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900">
+                    <div className="flex items-center gap-2">
+                      <BrandBadge name={row.bank} size={24} />
+                      {row.bank}
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-emerald-700">{row.homeLoanFrom}</td>
                   <td className="px-4 py-3 text-slate-600">{row.homeLoanTo}</td>
                 </tr>
@@ -184,7 +195,12 @@ export default function MarketsPage() {
             <tbody className="divide-y divide-slate-100">
               {healthInsurancePlans.map((row) => (
                 <tr key={row.insurer}>
-                  <td className="px-4 py-3 font-medium text-slate-900">{row.insurer}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900">
+                    <div className="flex items-center gap-2">
+                      <BrandBadge name={row.insurer} size={24} />
+                      {row.insurer}
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-slate-600">{row.plan}</td>
                   <td className="px-4 py-3 text-emerald-700">{row.claimSettlementRatio}</td>
                   <td className="px-4 py-3 text-slate-600">{row.rating}</td>

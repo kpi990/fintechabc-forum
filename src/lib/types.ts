@@ -29,6 +29,8 @@ export type Post = {
   is_removed: boolean;
   created_at: string;
   profiles?: Pick<Profile, "username" | "avatar_url"> | null;
+  boards?: Pick<Board, "name" | "slug"> | null;
+  comments?: { count: number }[];
 };
 
 export type Comment = {

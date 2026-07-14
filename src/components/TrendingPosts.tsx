@@ -1,27 +1,70 @@
 import Link from "next/link";
+import { formatDistanceToNowStrict } from "date-fns";
 import { getTrendingPosts } from "@/lib/stats";
+import Avatar from "@/components/Avatar";
 
+// This is the actual core of the product — real community discussions —
+// so it gets a full card treatment on Home, not just a bare link list.
 export default async function TrendingPosts() {
   const posts = await getTrendingPosts(5);
-  if (!posts.length) return null;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
-        Trending this week
-      </h3>
-      <div className="divide-y divide-slate-100">
-        {posts.map((post) => (
-          <Link
-            key={post.id}
-            href={`/post/${post.id}`}
-            className="flex items-center justify-between py-2 text-sm transition hover:text-violet-600"
-          >
-            <span className="truncate pr-3 text-slate-800">{post.title}</span>
-            <span className="shrink-0 text-xs font-medium text-slate-400">▲ {post.score}</span>
-          </Link>
-        ))}
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Trending discussions
+        </h3>
+        <Link href="/community" className="text-xs font-medium text-violet-600 hover:underline">
+          View all →
+        </Link>
       </div>
+
+      {!posts.length ? (
+        <div className="rounded-lg border border-dashed border-slate-200 py-8 text-center">
+          <p className="text-sm text-slate-500">No discussions yet — be the first to post.</p>
+          <Link
+            href="/community"
+            className="mt-2 inline-block text-xs font-medium text-violet-600 hover:underline"
+          >
+            Browse boards →
+          </Link>
+        </div>
+      ) : (
+        <div className="divide-y divide-slate-100">
+          {posts.map((post) => {
+            const commentCount = post.comments?.[0]?.count ?? 0;
+            return (
+              <Link
+                key={post.id}
+                href={`/post/${post.id}`}
+                className="block py-3 transition hover:bg-slate-50"
+              >
+                <div className="mb-1 flex items-center gap-1.5 text-xs text-slate-500">
+                  <Avatar username={post.profiles?.username ?? "?"} />
+                  <span className="font-medium text-slate-700">
+                    {post.profiles?.username ?? "[deleted]"}
+                  </span>
+                  {post.boards?.name && (
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+                      {post.boards.name}
+                    </span>
+                  )}
+                  <span>·</span>
+                  <span>{formatDistanceToNowStrict(new Date(post.created_at), { addSuffix: true })}</span>
+                </div>
+                <h4 className="font-medium text-slate-900">{post.title}</h4>
+                {post.body && (
+                  <p className="mt-0.5 line-clamp-2 text-sm text-slate-500">{post.body}</p>
+                )}
+                <div className="mt-1.5 flex items-center gap-4 text-xs text-slate-400">
+                  <span>▲ {post.score}</span>
+                  <span>{commentCount} {commentCount === 1 ? "reply" : "replies"}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
