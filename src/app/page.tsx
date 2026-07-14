@@ -4,11 +4,11 @@ import CommunityStatsBar from "@/components/CommunityStatsBar";
 import TrendingPosts from "@/components/TrendingPosts";
 import CryptoMovers from "@/components/CryptoMovers";
 import IndiaSnapshotCard from "@/components/IndiaSnapshotCard";
+import NewsFeed from "@/components/NewsFeed";
 
 export default function HomePage() {
   return (
     <div className="space-y-6">
-      {/* Compact greeting banner */}
       <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm sm:p-7">
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-violet-100">
           Discuss · Share · Grow
@@ -38,15 +38,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Live, auto-scrolling crypto ticker */}
-      <MarketTicker />
+      {/* India first: snapshot up top, before global crypto */}
+      <section>
+        <div className="mb-2 flex items-center gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            India markets
+          </h2>
+        </div>
+        <IndiaSnapshotCard />
+      </section>
 
-      {/* Dashboard grid: main column + right rail, like a market/community dashboard */}
+      {/* Global crypto, second */}
+      <section>
+        <div className="mb-2 flex items-center gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Global crypto — live
+          </h2>
+        </div>
+        <MarketTicker />
+        <a
+          href="https://www.coingecko.com/en/api"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1.5 inline-block text-xs text-slate-400 hover:underline"
+        >
+          Source: CoinGecko (live) ↗
+        </a>
+      </section>
+
+      {/* Core of the product: real community discussions */}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <TrendingPosts />
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div>
             <div className="mb-2 flex items-center justify-between">
               <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
                 Latest verified news
@@ -55,13 +80,7 @@ export default function HomePage() {
                 View all →
               </Link>
             </div>
-            <p className="text-sm text-slate-500">
-              Headlines from CoinDesk, Cointelegraph, and Yahoo Finance —{" "}
-              <Link href="/news" className="text-violet-600 hover:underline">
-                see the full feed
-              </Link>
-              .
-            </p>
+            <NewsFeed limit={3} showHeader={false} />
           </div>
 
           <CryptoMovers limit={4} />
@@ -69,7 +88,6 @@ export default function HomePage() {
 
         <div className="space-y-6">
           <CommunityStatsBar compact />
-          <IndiaSnapshotCard />
         </div>
       </div>
     </div>

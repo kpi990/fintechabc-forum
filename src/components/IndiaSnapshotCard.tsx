@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { ASOF_DATE, fnoSnapshot } from "@/lib/indiaMarkets";
+import { ASOF_DATE, fnoSnapshot, fnoSource } from "@/lib/indiaMarkets";
 
-// Compact India market card for the dashboard sidebar column on Home.
-// Full detail (IPOs, loan rates, insurance) lives on /markets.
 export default function IndiaSnapshotCard() {
   const { nifty, bankNifty } = fnoSnapshot;
   return (
@@ -33,9 +31,19 @@ export default function IndiaSnapshotCard() {
           </span>
         </div>
       </div>
-      <Link href="/markets" className="mt-3 block text-xs font-medium text-violet-600 hover:underline">
-        IPOs, loan rates &amp; insurance →
-      </Link>
+      <div className="mt-3 flex items-center justify-between">
+        <Link href="/markets" className="text-xs font-medium text-violet-600 hover:underline">
+          IPOs, loan rates &amp; insurance →
+        </Link>
+        <a
+          href={fnoSource.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-slate-400 hover:underline"
+        >
+          Source ↗
+        </a>
+      </div>
     </div>
   );
 }
