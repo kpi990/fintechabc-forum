@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MarketTicker from "@/components/MarketTicker";
 import CryptoMovers from "@/components/CryptoMovers";
 import BrandBadge from "@/components/BrandBadge";
+import RangeBar from "@/components/RangeBar";
 import {
   ASOF_DATE,
   upcomingIPOs,
@@ -71,10 +72,12 @@ export default function MarketsPage() {
             <div className="mt-1 text-2xl font-semibold text-slate-900">
               {fnoSnapshot.nifty.value.toLocaleString()}
             </div>
-            <div className="mt-1 text-xs text-slate-400">
-              Day range {fnoSnapshot.nifty.low.toLocaleString()} –{" "}
-              {fnoSnapshot.nifty.high.toLocaleString()}
-            </div>
+            <RangeBar
+              low={fnoSnapshot.nifty.low}
+              high={fnoSnapshot.nifty.high}
+              value={fnoSnapshot.nifty.value}
+              positive={fnoSnapshot.nifty.change >= 0}
+            />
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
@@ -89,10 +92,12 @@ export default function MarketsPage() {
             <div className="mt-1 text-2xl font-semibold text-slate-900">
               {fnoSnapshot.bankNifty.value.toLocaleString()}
             </div>
-            <div className="mt-1 text-xs text-slate-400">
-              Day range {fnoSnapshot.bankNifty.low.toLocaleString()} –{" "}
-              {fnoSnapshot.bankNifty.high.toLocaleString()}
-            </div>
+            <RangeBar
+              low={fnoSnapshot.bankNifty.low}
+              high={fnoSnapshot.bankNifty.high}
+              value={fnoSnapshot.bankNifty.value}
+              positive={fnoSnapshot.bankNifty.change >= 0}
+            />
           </div>
         </div>
         <p className="mt-3 text-xs text-slate-400">{fnoSnapshot.note}</p>
