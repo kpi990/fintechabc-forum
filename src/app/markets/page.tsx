@@ -72,12 +72,18 @@ export default function MarketsPage() {
             <div className="mt-1 text-2xl font-semibold text-slate-900">
               {fnoSnapshot.nifty.value.toLocaleString()}
             </div>
-            <RangeBar
-              low={fnoSnapshot.nifty.low}
-              high={fnoSnapshot.nifty.high}
-              value={fnoSnapshot.nifty.value}
-              positive={fnoSnapshot.nifty.change >= 0}
-            />
+            {fnoSnapshot.nifty.low != null && fnoSnapshot.nifty.high != null ? (
+              <RangeBar
+                low={fnoSnapshot.nifty.low}
+                high={fnoSnapshot.nifty.high}
+                value={fnoSnapshot.nifty.value}
+                positive={fnoSnapshot.nifty.change >= 0}
+              />
+            ) : (
+              <p className="mt-2 text-[10px] text-slate-400">
+                Intraday range not independently verified for today's session.
+              </p>
+            )}
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">

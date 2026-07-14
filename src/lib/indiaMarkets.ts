@@ -53,15 +53,24 @@ export const fnoSource: SourceLink = {
 };
 
 export const fnoSnapshot = {
-  asOf: "13 July 2026 (close)",
-  nifty: { value: 24211.0, change: 4.1, changePct: 0.02, high: 24259, low: 24039 },
-  bankNifty: { value: 58131.45, change: 85.55, changePct: 0.15, high: 58219, low: 57616 },
+  // 14 July 2026: re-verified after a reader flagged the previous number as
+  // stale. Search results for "today's" Nifty figure were themselves
+  // inconsistent (one source echoed yesterday's close mislabeled as today) —
+  // exactly the free-data-source unreliability flagged elsewhere in this
+  // file. Nifty's value/change below come from a live brokerage app
+  // screenshot the reader shared (more trustworthy than the conflicting
+  // search snippets); we don't have a verified intraday low/high for Nifty
+  // today, so none is shown rather than guessing. Bank Nifty's full OHLC
+  // was arithmetically consistent across sources, so its range is shown.
+  asOf: "14 July 2026 (intraday, not closing)",
+  nifty: { value: 24052.05, change: -158.95, changePct: -0.66, high: null as number | null, low: null as number | null },
+  bankNifty: { value: 57492.3, change: -639.15, changePct: -1.1, high: 57840.05 as number | null, low: 57377.75 as number | null },
   topSectors: [
     { name: "Nifty IT", changePct: 3.59 },
     { name: "Nifty Media", changePct: 2.09 },
     { name: "Nifty Consumer Durables", changePct: 1.15 },
   ],
-  note: "Cash/index close levels for context — not a live F&O order book or open-interest feed. NSE's real-time F&O data (option chains, OI, volumes) is a licensed commercial product we don't have access to. Click through for the current live index value.",
+  note: "Point-in-time figures, not a live tick-by-tick feed — click the source link for the current value.",
 };
 
 export type LoanRate = {
