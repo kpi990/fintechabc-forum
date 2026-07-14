@@ -1,49 +1,77 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import type { Board } from "@/lib/types";
+import type { Metadata } from "next";
+import { getBoardsWithStats } from "@/lib/stats";
+import { getCommunityStats } from "@/lib/stats";
+import BrandBadge from "@/components/BrandBadge";
+
+export const metadata: Metadata = {
+  title: "Community boards",
+  description: "Browse fintechabc's crypto, markets, and personal-finance discussion boards.",
+};
 
 export default async function CommunityPage() {
-  const supabase = await createClient();
-  const { data: boards } = await supabase
-    .from("boards")
-    .select("*")
-    .order("created_at", { ascending: true });
+  const [boards, stats] = await Promise.all([getBoardsWithStats(), getCommunityStats()]);
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Community boards</h1>
-        <p className="mt-1 text-sm text-slate-500">Pick a topic to join the conversation.</p>
+      <div className="mb-6 rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm">
+        <h1 className="text-2xl font-semibold tracking-tight">Community boards</h1>
+        <p className="mt-1 max-w-lg text-sm text-violet-100">
+          Pick a topic and join the conversation — crypto, markets, and personal finance,
+          moderated for quality discussion.
+        </p>
+        <div className="mt-4 flex gap-6 text-sm">
+          <div>
+            <div className="text-lg font-semibold">{stats.memberCount.toLocaleString()}</div>
+            <div className="text-xs text-violet-100">Members</div>
+          </div>
+          <div>
+            <div className="text-lg font-semibold">{boards.length}</div>
+            <div className="text-xs text-violet-100">Boards</div>
+          </div>
+          <div>
+            <div className="text-lg font-semibold">{stats.totalPosts.toLocaleString()}</div>
+            <div className="text-xs text-violet-100">Total posts</div>
+          </div>
+        </div>
       </div>
-      <div className="space-y-3">
-        {(boards as Board[] | null)?.map((board) => (
-          <Link
-            key={board.id}
-            href={`/board/${board.slug}`}
-            className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div>
-              <div className="flex items-center gap-2 font-medium text-slate-900">
-                {board.name}
-                {board.is_paid && (
-                  <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
-                    Paid
-                  </span>
+
+      {!boards.length ? (
+        <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+          No boards yet. Run <code>schema.sql</code> in Supabase to seed the starter boards.
+        </p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {boards.map((board) => (
+            <Link
+              key={board.id}
+              href={`/board/${board.slug}`}
+              className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <BrandBadge name={board.name} size={40} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 font-medium text-slate-900">
+                  <span className="truncate">{board.name}</span>
+                  {board.is_paid && (
+                    <span className="shrink-0 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                      Paid
+                    </span>
+                  )}
+                </div>
+                {board.description && (
+                  <p className="mt-1 line-clamp-2 text-sm text-slate-500">{board.description}</p>
                 )}
+                <div className="mt-2 text-xs text-slate-400">
+                  {board.postCount} {board.postCount === 1 ? "post" : "posts"}
+                </div>
               </div>
-              {board.description && (
-                <p className="mt-1 text-sm text-slate-500">{board.description}</p>
-              )}
-            </div>
-            <span className="text-slate-300 transition group-hover:text-violet-500">→</span>
-          </Link>
-        ))}
-        {!boards?.length && (
-          <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-            No boards yet. Run <code>schema.sql</code> in Supabase to seed the starter boards.
-          </p>
-        )}
-      </div>
+              <span className="shrink-0 text-slate-300 transition group-hover:text-violet-500">
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

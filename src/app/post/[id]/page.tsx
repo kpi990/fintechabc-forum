@@ -1,9 +1,28 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
 import CommentThread from "@/components/CommentThread";
 import Avatar from "@/components/Avatar";
 import type { Post, Comment } from "@/lib/types";
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const supabase = await createClient();
+  const { data: post } = await supabase.from("posts").select("title, body").eq("id", id).single();
+
+  if (!post) return { title: "Post not found" };
+
+  return {
+    title: post.title,
+    description: post.body ? post.body.slice(0, 160) : `Discussion: ${post.title}`,
+  };
+}
 
 export default async function PostPage({
   params,

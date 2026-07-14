@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "What fintechabc is, what you'll find here, and how to reach us.",
+};
+
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-8">

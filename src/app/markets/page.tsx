@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import MarketTicker from "@/components/MarketTicker";
 import CryptoMovers from "@/components/CryptoMovers";
 import BrandBadge from "@/components/BrandBadge";
@@ -8,6 +9,12 @@ import {
   homeLoanRates,
   healthInsurancePlans,
 } from "@/lib/indiaMarkets";
+
+export const metadata: Metadata = {
+  title: "Markets — live crypto, Nifty, IPOs, loan rates & insurance",
+  description:
+    "Live global crypto prices and top movers, plus an India market snapshot: Nifty/Bank Nifty, upcoming IPOs, home loan rates, and health insurance plans.",
+};
 
 export default function MarketsPage() {
   return (

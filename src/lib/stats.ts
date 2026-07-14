@@ -57,3 +57,42 @@ export async function getTrendingPosts(limit = 5): Promise<Post[]> {
 
   return (recent as unknown as Post[]) ?? [];
 }
+
+export type BoardWithStats = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  is_paid: boolean;
+  postCount: number;
+};
+
+export async function getBoardsWithStats(): Promise<BoardWithStats[]> {
+  const supabase = await createClient();
+  const { data: boards } = await supabase
+    .from("boards")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (!boards?.length) return [];
+
+  const withCounts = await Promise.all(
+    boards.map(async (board) => {
+      const { count } = await supabase
+        .from("posts")
+        .select("*", { count: "exact", head: true })
+        .eq("board_id", board.id)
+        .eq("is_removed", false);
+      return {
+        id: board.id,
+        slug: board.slug,
+        name: board.name,
+        description: board.description,
+        is_paid: board.is_paid,
+        postCount: count ?? 0,
+      };
+    })
+  );
+
+  return withCounts;
+}
