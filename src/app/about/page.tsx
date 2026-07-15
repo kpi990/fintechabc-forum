@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PromoBanner from "@/components/PromoBanner";
 
 export const metadata: Metadata = {
   title: "About",
@@ -8,14 +9,14 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-8">
+      <PromoBanner />
+
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
           About fintechabc
         </h1>
         <p className="mt-2 text-muted">
-          Ask better. Build better. Compound better. fintechabc is where India&apos;s financial
-          community grows together — built for Indian investors first, with global crypto
-          coverage from day one.
+          Built for Indian investors first, with global crypto coverage from day one.
         </p>
       </div>
 

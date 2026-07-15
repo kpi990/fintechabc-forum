@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import TopNav from "@/components/TopNav";
+import { getCommunityStats } from "@/lib/stats";
 import LogoIcon from "@/components/LogoIcon";
 
 const geistSans = Geist({
@@ -73,11 +74,12 @@ const FOOTER_COLUMNS: { heading: string; links: { href: string; label: string }[
   },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const stats = await getCommunityStats();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -105,6 +107,25 @@ export default function RootLayout({
           <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">{children}</main>
 
           <footer className="border-t border-line bg-surface">
+              <div className="bg-gradient-to-r from-[#0d0b1f] via-[#1a1235] to-[#2a1a4a]">
+                <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-4 py-4 text-center sm:px-6 sm:justify-between sm:text-left">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-50">{stats.memberCount.toLocaleString()}</div>
+                    <div className="text-[11px] uppercase tracking-wide text-faint">Members</div>
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-slate-50">{stats.totalPosts.toLocaleString()}</div>
+                    <div className="text-[11px] uppercase tracking-wide text-faint">Discussions</div>
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-slate-50">{stats.postsLast7Days.toLocaleString()}</div>
+                    <div className="text-[11px] uppercase tracking-wide text-faint">Posts this week</div>
+                  </div>
+                  <div className="text-xs text-faint">
+                    A new, honestly-small community — real numbers, growing as it goes.
+                  </div>
+                </div>
+              </div>
               <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
                 <div className="grid gap-8 sm:grid-cols-[2fr_1fr_1fr]">
                   <div>
