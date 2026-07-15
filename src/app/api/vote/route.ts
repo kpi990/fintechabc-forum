@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit } from "@/lib/rateLimit";
 
 export async function POST(request: Request) {
+  const verification = await checkBotId();
+  if (verification.isBot) {
+    return NextResponse.json({ error: "Request blocked" }, { status: 403 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -9,6 +16,10 @@ export async function POST(request: Request) {
 
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  if (!checkLimit(`vote:${user.id}`, 60, 60 * 1000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
   const { targetType, targetId, value } = await request.json();

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit } from "@/lib/rateLimit";
 import VoteButtons from "@/components/VoteButtons";
 import CommentThread from "@/components/CommentThread";
 import Avatar from "@/components/Avatar";
@@ -49,11 +51,14 @@ export default async function PostPage({
 
   async function addComment(formData: FormData) {
     "use server";
+    const verification = await checkBotId();
+    if (verification.isBot) return;
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) redirect(`/login?next=/post/${id}`);
+    if (!checkLimit(`comment:${user.id}`, 15, 10 * 60 * 1000)) return;
 
     const body = String(formData.get("body") ?? "").trim();
     const parentId = formData.get("parentId") ? String(formData.get("parentId")) : null;

@@ -1,5 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit } from "@/lib/rateLimit";
 
 export default async function NewPostPage({
   params,
@@ -19,11 +21,14 @@ export default async function NewPostPage({
 
   async function createPost(formData: FormData) {
     "use server";
+    const verification = await checkBotId();
+    if (verification.isBot) return;
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) redirect(`/login?next=/board/${slug}/new`);
+    if (!checkLimit(`post:${user.id}`, 5, 10 * 60 * 1000)) return;
 
     const title = String(formData.get("title") ?? "").trim();
     const body = String(formData.get("body") ?? "").trim();

@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit, getClientIp } from "@/lib/rateLimit";
 
 export default async function SignupPage({
   searchParams,
@@ -11,6 +14,14 @@ export default async function SignupPage({
 
   async function signup(formData: FormData) {
     "use server";
+    const verification = await checkBotId();
+    if (verification.isBot) {
+      redirect("/signup?error=" + encodeURIComponent("Couldn't verify your request. Please try again."));
+    }
+    const ip = getClientIp(await headers());
+    if (!checkLimit(`signup:${ip}`, 5, 15 * 60 * 1000)) {
+      redirect("/signup?error=" + encodeURIComponent("Too many signup attempts. Please try again in a few minutes."));
+    }
     const supabase = await createClient();
     const email = String(formData.get("email"));
     const password = String(formData.get("password"));

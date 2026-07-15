@@ -115,7 +115,11 @@ create policy "moderators can read reports" on public.reports for select using (
 );
 
 create or replace function public.handle_new_user()
-returns trigger as $$
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
 begin
   insert into public.profiles (id, username, display_name)
   values (
@@ -125,7 +129,12 @@ begin
   );
   return new;
 end;
-$$ language plpgsql security definer;
+$$;
+
+-- Trigger-only function: never meant to be called directly via PostgREST RPC.
+revoke execute on function public.handle_new_user() from public;
+revoke execute on function public.handle_new_user() from anon;
+revoke execute on function public.handle_new_user() from authenticated;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created

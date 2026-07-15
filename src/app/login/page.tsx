@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit, getClientIp } from "@/lib/rateLimit";
 
 export default async function LoginPage({
   searchParams,
@@ -11,10 +14,18 @@ export default async function LoginPage({
 
   async function login(formData: FormData) {
     "use server";
+    const verification = await checkBotId();
+    if (verification.isBot) {
+      redirect("/login?error=" + encodeURIComponent("Couldn't verify your request. Please try again."));
+    }
+    const nextPath = String(formData.get("next") ?? "/");
+    const ip = getClientIp(await headers());
+    if (!checkLimit(`login:${ip}`, 10, 10 * 60 * 1000)) {
+      redirect("/login?error=" + encodeURIComponent("Too many attempts. Please try again in a few minutes.") + `&next=${nextPath}`);
+    }
     const supabase = await createClient();
     const email = String(formData.get("email"));
     const password = String(formData.get("password"));
-    const nextPath = String(formData.get("next") ?? "/");
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) redirect(`/login?error=${encodeURIComponent(error.message)}&next=${nextPath}`);

@@ -2,12 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { checkBotId } from "botid/server";
+import { checkLimit } from "@/lib/rateLimit";
 
 export async function submitReport(
   targetType: "post" | "comment",
   targetId: string,
   reason: string
 ) {
+  const verification = await checkBotId();
+  if (verification.isBot) {
+    return { error: "Couldn't verify your request. Please try again." };
+  }
   const supabase = await createClient();
   const {
     data: { user },
@@ -15,6 +21,9 @@ export async function submitReport(
 
   if (!user) {
     return { error: "You need to be signed in to report content." };
+  }
+  if (!checkLimit(`report:${user.id}`, 10, 10 * 60 * 1000)) {
+    return { error: "Too many reports submitted. Please try again later." };
   }
   if (!reason.trim()) {
     return { error: "Please add a short reason." };
