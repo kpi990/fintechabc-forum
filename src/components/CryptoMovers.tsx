@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTopMovers } from "@/lib/market";
 import { createClient } from "@/lib/supabase/server";
 import { getWatchlistCoinIds } from "@/lib/watchlist";
@@ -33,10 +34,10 @@ function MoverRow({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={image} alt="" width={20} height={20} className="shrink-0 rounded-full" />
         )}
-        <div className="min-w-0">
+        <Link href={`/coin/${id}`} className="min-w-0 transition hover:text-accent">
           <div className="font-medium text-slate-50">{symbol}</div>
           <div className="truncate text-xs text-faint">{name}</div>
-        </div>
+        </Link>
       </div>
       <Sparkline points={sparkline} positive={isUp} />
       <div className="flex shrink-0 items-center gap-2">

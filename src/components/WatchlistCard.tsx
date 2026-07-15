@@ -77,13 +77,16 @@ export default async function WatchlistCard() {
             const isUp = c.changePct24h >= 0;
             return (
               <div key={c.id} className="flex items-center justify-between gap-2 py-2">
-                <div className="flex min-w-0 items-center gap-2">
+                <Link
+                  href={`/coin/${c.id}`}
+                  className="flex min-w-0 items-center gap-2 transition hover:text-accent"
+                >
                   {c.image && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={c.image} alt="" width={18} height={18} className="shrink-0 rounded-full" />
                   )}
                   <span className="truncate text-sm font-medium text-slate-50">{c.symbol}</span>
-                </div>
+                </Link>
                 <div className="flex shrink-0 items-center gap-2">
                   <span className="tabular text-sm text-slate-200">
                     ${c.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}

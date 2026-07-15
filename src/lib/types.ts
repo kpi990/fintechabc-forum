@@ -17,6 +17,7 @@ export type Board = {
   description: string | null;
   is_paid: boolean;
   stripe_price_id: string | null;
+  coin_id: string | null;
   created_at: string;
 };
 

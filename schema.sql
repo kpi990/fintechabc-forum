@@ -23,6 +23,7 @@ create table if not exists public.boards (
   description text,
   is_paid boolean not null default false,
   stripe_price_id text,
+  coin_id text unique,
   created_by uuid references public.profiles(id),
   created_at timestamptz not null default now()
 );
@@ -97,6 +98,8 @@ alter table public.reports enable row level security;
 create policy "profiles are publicly readable" on public.profiles for select using (true);
 create policy "users can update their own profile" on public.profiles for update using (auth.uid() = id);
 create policy "boards are publicly readable" on public.boards for select using (true);
+create policy "authenticated users can create coin boards" on public.boards for insert
+  with check (coin_id is not null and auth.uid() is not null);
 create policy "posts are publicly readable" on public.posts for select using (true);
 create policy "authenticated users can create posts" on public.posts for insert with check (auth.uid() = author_id);
 create policy "authors and moderators can update posts" on public.posts for update using (

@@ -2,24 +2,24 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { checkBotId } from "botid/server";
 import { checkLimit } from "@/lib/rateLimit";
-import type { Board } from "@/lib/types";
+import { getCoinsByIds } from "@/lib/market";
+import { getOrCreateCoinBoard } from "@/lib/coinBoards";
 
-export default async function NewPostPage({
+export default async function NewCoinPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
+  const { id } = await params;
   const supabase = await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?next=/board/${slug}/new`);
+  if (!user) redirect(`/login?next=/coin/${id}/new`);
 
-  const { data: board } = await supabase.from("boards").select("*").eq("slug", slug).single<Board>();
-  if (!board) notFound();
-  if (board.coin_id) redirect(`/coin/${board.coin_id}/new`);
+  const [coin] = await getCoinsByIds([id]);
+  if (!coin) notFound();
 
   async function createPost(formData: FormData) {
     "use server";
@@ -29,19 +29,22 @@ export default async function NewPostPage({
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) redirect(`/login?next=/board/${slug}/new`);
+    if (!user) redirect(`/login?next=/coin/${id}/new`);
     if (!checkLimit(`post:${user.id}`, 5, 10 * 60 * 1000)) return;
 
     const title = String(formData.get("title") ?? "").trim();
     const body = String(formData.get("body") ?? "").trim();
     if (!title) return;
 
-    const { data: boardRow } = await supabase.from("boards").select("id").eq("slug", slug).single();
-    if (!boardRow) return;
+    const [coin] = await getCoinsByIds([id]);
+    if (!coin) return;
+
+    const board = await getOrCreateCoinBoard(id, coin.name, coin.symbol);
+    if (!board) return;
 
     const { data: post } = await supabase
       .from("posts")
-      .insert({ board_id: boardRow.id, author_id: user.id, title, body })
+      .insert({ board_id: board.id, author_id: user.id, title, body })
       .select("id")
       .single();
 
@@ -51,7 +54,7 @@ export default async function NewPostPage({
   return (
     <div className="mx-auto max-w-xl">
       <h1 className="mb-6 text-xl font-semibold tracking-tight text-slate-50">
-        New post in {board.name}
+        New post about {coin.name}
       </h1>
       <form
         action={createPost}

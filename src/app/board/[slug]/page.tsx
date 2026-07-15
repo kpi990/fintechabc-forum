@@ -1,32 +1,9 @@
 import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
 import Avatar from "@/components/Avatar";
 import type { Board, Post } from "@/lib/types";
-
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const supabase = await createClient();
-  const { data: board } = await supabase
-    .from("boards")
-    .select("name, description")
-    .eq("slug", slug)
-    .single();
-
-  if (!board) return { title: "Board not found" };
-
-  return {
-    title: board.name,
-    description: board.description ?? `Discussions in the ${board.name} board on fintechabc.`,
-  };
-}
 
 export default async function BoardPage({
   params,
@@ -43,6 +20,11 @@ export default async function BoardPage({
     .single<Board>();
 
   if (!board) notFound();
+
+  // Coin-linked boards have a richer, canonical home at /coin/[id] (live
+  // price header + the same discussion thread) - redirect there instead of
+  // maintaining two separate URLs that show the same posts.
+  if (board.coin_id) redirect(`/coin/${board.coin_id}`);
 
   const { data: posts } = await supabase
     .from("posts")
@@ -79,7 +61,7 @@ export default async function BoardPage({
         {(posts as Post[] | null)?.map((post) => (
           <div
             key={post.id}
-            className="flex gap-4 rounded-xl border border-line bg-surface p-4 shadow-sm transition hover:shadow-md"
+            className="flex gap-4 rounded-xl border border-line bg-surface p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
             <VoteButtons targetType="post" targetId={post.id} initialScore={post.score} />
             <div className="flex-1">
@@ -89,7 +71,7 @@ export default async function BoardPage({
               >
                 {post.title}
               </Link>
-              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-faint">
                 <Avatar username={post.profiles?.username ?? "?"} />
                 <span>{post.profiles?.username ?? "[deleted]"}</span>
               </div>

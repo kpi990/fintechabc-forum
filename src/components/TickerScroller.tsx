@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { CoinPrice } from "@/lib/market";
 
 const POLL_MS = 30_000;
@@ -8,7 +9,10 @@ const POLL_MS = 30_000;
 function TickerItem({ coin }: { coin: CoinPrice }) {
   const isUp = coin.changePct24h >= 0;
   return (
-    <div className="flex shrink-0 items-center gap-2 px-4 py-3">
+    <Link
+      href={`/coin/${coin.id}`}
+      className="flex shrink-0 items-center gap-2 px-4 py-3 transition hover:bg-white/5"
+    >
       {coin.image && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={coin.image} alt="" width={16} height={16} className="rounded-full" />
@@ -24,7 +28,7 @@ function TickerItem({ coin }: { coin: CoinPrice }) {
       <span className={`text-xs font-medium ${isUp ? "text-up" : "text-down"}`}>
         {isUp ? "▲" : "▼"} {Math.abs(coin.changePct24h).toFixed(2)}%
       </span>
-    </div>
+    </Link>
   );
 }
 
