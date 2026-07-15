@@ -24,6 +24,9 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.body ? post.body.slice(0, 160) : `Discussion: ${post.title}`,
+    alternates: {
+      canonical: `/post/${id}`,
+    },
   };
 }
 

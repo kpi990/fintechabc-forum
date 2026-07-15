@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Markets — Nifty, IPOs, loan rates, insurance & live crypto",
   description:
     "India market snapshot first — Nifty/Bank Nifty, upcoming IPOs, home loan rates, and health insurance plans, each linked to a live source — followed by live global crypto prices and top movers.",
+  alternates: {
+    canonical: "/markets",
+  },
 };
 
 function SourceLink({ label, url }: { label: string; url: string }) {

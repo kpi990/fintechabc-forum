@@ -23,6 +23,9 @@ export async function generateMetadata({
   return {
     title: `${coin.name} (${coin.symbol}) — Price & Community`,
     description: `Live ${coin.name} price, 24h change, and community discussion on fintechabc.`,
+    alternates: {
+      canonical: `/coin/${id}`,
+    },
   };
 }
 

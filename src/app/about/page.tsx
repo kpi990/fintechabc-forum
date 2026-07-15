@@ -4,6 +4,9 @@ import PromoBanner from "@/components/PromoBanner";
 export const metadata: Metadata = {
   title: "About",
   description: "What fintechabc is, what you'll find here, and how to reach us.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

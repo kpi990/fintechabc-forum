@@ -1,9 +1,34 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
 import Avatar from "@/components/Avatar";
 import type { Board, Post } from "@/lib/types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = await createClient();
+  const { data: board } = await supabase
+    .from("boards")
+    .select("name, description")
+    .eq("slug", slug)
+    .single<Pick<Board, "name" | "description">>();
+
+  if (!board) return { title: "Board not found" };
+
+  return {
+    title: `${board.name} — Community board`,
+    description: board.description ?? `Discussion board for ${board.name} on fintechabc.`,
+    alternates: {
+      canonical: `/board/${slug}`,
+    },
+  };
+}
 
 export default async function BoardPage({
   params,

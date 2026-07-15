@@ -7,6 +7,9 @@ import BrandBadge from "@/components/BrandBadge";
 export const metadata: Metadata = {
   title: "Community boards",
   description: "Browse fintechabc's crypto, markets, and personal-finance discussion boards.",
+  alternates: {
+    canonical: "/community",
+  },
 };
 
 export default async function CommunityPage() {

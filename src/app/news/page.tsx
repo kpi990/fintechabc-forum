@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Verified crypto & markets news",
   description:
     "Live headlines from CoinDesk, Cointelegraph, and Yahoo Finance — with source attribution and links to the original article.",
+  alternates: {
+    canonical: "/news",
+  },
 };
 
 export default function NewsPage() {
