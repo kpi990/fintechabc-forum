@@ -17,11 +17,11 @@ export default async function Sidebar() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let profile: { username: string } | null = null;
+  let profile: { username: string; is_moderator: boolean; is_admin: boolean } | null = null;
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("username")
+      .select("username, is_moderator, is_admin")
       .eq("id", user.id)
       .single();
     profile = data;
@@ -52,6 +52,14 @@ export default async function Sidebar() {
             {link.label}
           </Link>
         ))}
+        {profile && (profile.is_moderator || profile.is_admin) && (
+          <Link
+            href="/admin"
+            className="block rounded-lg px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-50"
+          >
+            Admin
+          </Link>
+        )}
       </nav>
 
       <div className="border-t border-slate-100 p-4">

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import VoteButtons from "@/components/VoteButtons";
 import CommentThread from "@/components/CommentThread";
 import Avatar from "@/components/Avatar";
+import ReportButton from "@/components/ReportButton";
 import type { Post, Comment } from "@/lib/types";
 
 
@@ -77,9 +78,16 @@ export default async function PostPage({
             <Avatar username={post.profiles?.username ?? "?"} />
             <span>{post.profiles?.username ?? "[deleted]"}</span>
           </div>
-          {post.body && (
-            <p className="whitespace-pre-wrap leading-relaxed text-slate-700">{post.body}</p>
+          {post.is_removed ? (
+            <p className="italic text-slate-400">[removed by moderator]</p>
+          ) : (
+            post.body && (
+              <p className="whitespace-pre-wrap leading-relaxed text-slate-700">{post.body}</p>
+            )
           )}
+          <div className="mt-2">
+            <ReportButton targetType="post" targetId={post.id} />
+          </div>
         </div>
       </div>
 

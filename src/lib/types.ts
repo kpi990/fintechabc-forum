@@ -5,6 +5,7 @@ export type Profile = {
   avatar_url: string | null;
   karma: number;
   is_moderator: boolean;
+  is_admin: boolean;
   is_banned: boolean;
   created_at: string;
 };
@@ -43,4 +44,17 @@ export type Comment = {
   is_removed: boolean;
   created_at: string;
   profiles?: Pick<Profile, "username" | "avatar_url"> | null;
+};
+
+export type Report = {
+  id: string;
+  reporter_id: string | null;
+  post_id: string | null;
+  comment_id: string | null;
+  reason: string;
+  resolved: boolean;
+  created_at: string;
+  profiles?: Pick<Profile, "username"> | null;
+  posts?: Pick<Post, "id" | "title" | "body" | "is_removed"> | null;
+  comments?: Pick<Comment, "id" | "body" | "is_removed" | "post_id"> | null;
 };

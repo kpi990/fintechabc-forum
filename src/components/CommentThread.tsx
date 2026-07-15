@@ -1,5 +1,6 @@
 import VoteButtons from "@/components/VoteButtons";
 import Avatar from "@/components/Avatar";
+import ReportButton from "@/components/ReportButton";
 import type { Comment } from "@/lib/types";
 
 type Props = {
@@ -29,6 +30,11 @@ export default function CommentThread({ comments, parentId, depth = 0 }: Props) 
                 comment.body
               )}
             </p>
+            {!comment.is_removed && (
+              <div className="mt-1">
+                <ReportButton targetType="comment" targetId={comment.id} />
+              </div>
+            )}
             <CommentThread comments={comments} parentId={comment.id} depth={depth + 1} />
           </div>
         </div>

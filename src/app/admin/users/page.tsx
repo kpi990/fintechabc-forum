@@ -1,0 +1,88 @@
+import { createClient } from "@/lib/supabase/server";
+import type { Profile } from "@/lib/types";
+import { getViewerRole } from "@/lib/admin";
+import { setBanned, setModerator } from "./actions";
+
+export default async function AdminUsersPage() {
+  const supabase = await createClient();
+  const viewer = await getViewerRole();
+
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("*")
+    .order("created_at", { ascending: true })
+    .returns<Profile[]>();
+
+  const users = profiles ?? [];
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <table className="w-full text-left text-sm">
+        <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th className="px-4 py-2.5 font-medium">User</th>
+            <th className="px-4 py-2.5 font-medium">Karma</th>
+            <th className="px-4 py-2.5 font-medium">Joined</th>
+            <th className="px-4 py-2.5 font-medium">Role</th>
+            <th className="px-4 py-2.5 font-medium">Status</th>
+            <th className="px-4 py-2.5 font-medium">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {users.map((u) => {
+            const isSelf = viewer?.userId === u.id;
+            return (
+              <tr key={u.id}>
+                <td className="px-4 py-3 font-medium text-slate-900">{u.username}</td>
+                <td className="px-4 py-3 text-slate-600">{u.karma}</td>
+                <td className="px-4 py-3 text-slate-500">
+                  {new Date(u.created_at).toLocaleDateString("en-IN")}
+                </td>
+                <td className="px-4 py-3">
+                  {u.is_admin ? (
+                    <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700">
+                      Admin
+                    </span>
+                  ) : u.is_moderator ? (
+                    <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700">
+                      Moderator
+                    </span>
+                  ) : (
+                    <span className="text-xs text-slate-400">Member</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {u.is_banned ? (
+                    <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">
+                      Banned
+                    </span>
+                  ) : (
+                    <span className="text-xs text-slate-400">Active</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {isSelf || u.is_admin ? (
+                    <span className="text-xs text-slate-400">—</span>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      <form action={setBanned.bind(null, u.id, !u.is_banned)}>
+                        <button className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50">
+                          {u.is_banned ? "Unban" : "Ban"}
+                        </button>
+                      </form>
+                      <form action={setModerator.bind(null, u.id, !u.is_moderator)}>
+                        <button className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50">
+                          {u.is_moderator ? "Remove moderator" : "Make moderator"}
+                        </button>
+                      </form>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}

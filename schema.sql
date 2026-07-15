@@ -11,6 +11,7 @@ create table if not exists public.profiles (
   avatar_url text,
   karma integer not null default 0,
   is_moderator boolean not null default false,
+  is_admin boolean not null default false,
   is_banned boolean not null default false,
   created_at timestamptz not null default now()
 );
@@ -136,3 +137,16 @@ values
   ('general', 'General Discussion', 'Open discussion on crypto and financial markets. Not financial advice.', false),
   ('news', 'Market News', 'Share and discuss market-moving news.', false)
 on conflict (slug) do nothing;
+
+-- Admin portal: user management + moderation (added when the admin portal was built)
+create policy "admins can update any profile" on public.profiles for update using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
+) with check (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
+);
+
+create policy "moderators can update reports" on public.reports for update using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_moderator or p.is_admin))
+) with check (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_moderator or p.is_admin))
+);
