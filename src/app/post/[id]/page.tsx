@@ -52,6 +52,7 @@ export default async function PostPage({
   async function addComment(formData: FormData) {
     "use server";
     const verification = await checkBotId();
+    console.log("[botid] /post/* comment", JSON.stringify(verification));
     if (verification.isBot) return;
     const supabase = await createClient();
     const {

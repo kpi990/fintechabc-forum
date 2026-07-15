@@ -15,6 +15,7 @@ export default async function LoginPage({
   async function login(formData: FormData) {
     "use server";
     const verification = await checkBotId();
+    console.log("[botid] /login", JSON.stringify(verification));
     if (verification.isBot) {
       redirect("/login?error=" + encodeURIComponent("Couldn't verify your request. Please try again."));
     }

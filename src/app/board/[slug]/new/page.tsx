@@ -24,6 +24,7 @@ export default async function NewPostPage({
   async function createPost(formData: FormData) {
     "use server";
     const verification = await checkBotId();
+    console.log("[botid] /board/*/new", JSON.stringify(verification));
     if (verification.isBot) return;
     const supabase = await createClient();
     const {

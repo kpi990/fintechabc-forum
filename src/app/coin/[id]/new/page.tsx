@@ -24,6 +24,7 @@ export default async function NewCoinPostPage({
   async function createPost(formData: FormData) {
     "use server";
     const verification = await checkBotId();
+    console.log("[botid] /coin/*/new", JSON.stringify(verification));
     if (verification.isBot) return;
     const supabase = await createClient();
     const {

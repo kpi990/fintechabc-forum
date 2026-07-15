@@ -5,6 +5,7 @@ import { checkLimit } from "@/lib/rateLimit";
 
 export async function POST(request: Request) {
   const verification = await checkBotId();
+  console.log("[botid] /api/vote", JSON.stringify(verification));
   if (verification.isBot) {
     return NextResponse.json({ error: "Request blocked" }, { status: 403 });
   }

@@ -9,6 +9,7 @@ initBotId({
     { path: "/signup", method: "POST" },
     { path: "/login", method: "POST" },
     { path: "/board/*/new", method: "POST" },
+    { path: "/coin/*/new", method: "POST" },
     { path: "/post/*", method: "POST" },
     { path: "/api/vote", method: "POST" },
   ],
