@@ -1,8 +1,29 @@
 import { getTopMovers } from "@/lib/market";
+import { createClient } from "@/lib/supabase/server";
+import { getWatchlistCoinIds } from "@/lib/watchlist";
 import Sparkline from "@/components/Sparkline";
+import WatchlistButton from "@/components/WatchlistButton";
 
-function MoverRow({ id, symbol, name, price, changePct24h, image, sparkline }: {
-  id: string; symbol: string; name: string; price: number; changePct24h: number; image: string; sparkline: number[];
+function MoverRow({
+  id,
+  symbol,
+  name,
+  price,
+  changePct24h,
+  image,
+  sparkline,
+  isLoggedIn,
+  inWatchlist,
+}: {
+  id: string;
+  symbol: string;
+  name: string;
+  price: number;
+  changePct24h: number;
+  image: string;
+  sparkline: number[];
+  isLoggedIn: boolean;
+  inWatchlist: boolean;
 }) {
   const isUp = changePct24h >= 0;
   return (
@@ -18,14 +39,17 @@ function MoverRow({ id, symbol, name, price, changePct24h, image, sparkline }: {
         </div>
       </div>
       <Sparkline points={sparkline} positive={isUp} />
-      <div className="flex shrink-0 flex-col items-end">
-        <span className="text-sm text-slate-200">
-          ${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-        </span>
-        <span className={`text-sm font-medium ${isUp ? "text-up" : "text-down"}`}>
-          {isUp ? "+" : ""}
-          {changePct24h.toFixed(2)}%
-        </span>
+      <div className="flex shrink-0 items-center gap-2">
+        <div className="flex flex-col items-end">
+          <span className="tabular text-sm text-slate-200">
+            ${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+          </span>
+          <span className={`tabular text-sm font-medium ${isUp ? "text-up" : "text-down"}`}>
+            {isUp ? "+" : ""}
+            {changePct24h.toFixed(2)}%
+          </span>
+        </div>
+        <WatchlistButton coinId={id} initialInWatchlist={inWatchlist} isLoggedIn={isLoggedIn} />
       </div>
     </div>
   );
@@ -38,7 +62,16 @@ export default async function CryptoMovers({
   limit?: number;
   layout?: "grid" | "stack";
 }) {
-  const { gainers, losers } = await getTopMovers(limit);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [{ gainers, losers }, watchlistIds] = await Promise.all([
+    getTopMovers(limit),
+    user ? getWatchlistCoinIds(user.id) : Promise.resolve([] as string[]),
+  ]);
+  const watchlistSet = new Set(watchlistIds);
 
   const gainersCard = (
     <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
@@ -47,7 +80,12 @@ export default async function CryptoMovers({
       </h3>
       <div className="divide-y divide-line">
         {gainers.map((c) => (
-          <MoverRow key={c.id} {...c} />
+          <MoverRow
+            key={c.id}
+            {...c}
+            isLoggedIn={!!user}
+            inWatchlist={watchlistSet.has(c.id)}
+          />
         ))}
       </div>
     </div>
@@ -60,7 +98,12 @@ export default async function CryptoMovers({
       </h3>
       <div className="divide-y divide-line">
         {losers.map((c) => (
-          <MoverRow key={c.id} {...c} />
+          <MoverRow
+            key={c.id}
+            {...c}
+            isLoggedIn={!!user}
+            inWatchlist={watchlistSet.has(c.id)}
+          />
         ))}
       </div>
     </div>

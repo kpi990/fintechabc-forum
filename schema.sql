@@ -172,3 +172,18 @@ alter table public.user_emails enable row level security;
 create policy "admins can read user emails" on public.user_emails for select using (
   exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
 );
+
+-- Watchlist (crypto only in v1 - no data source for individual India stocks yet)
+create table if not exists public.watchlist_items (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  coin_id text not null,
+  created_at timestamptz not null default now(),
+  unique (user_id, coin_id)
+);
+alter table public.watchlist_items enable row level security;
+create policy "users manage their own watchlist" on public.watchlist_items for all using (
+  auth.uid() = user_id
+) with check (
+  auth.uid() = user_id
+);

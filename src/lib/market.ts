@@ -54,3 +54,18 @@ export async function getTopMovers(limit = 5): Promise<{ gainers: CoinPrice[]; l
     losers: sorted.slice(-limit).reverse(),
   };
 }
+
+// Full top-100 universe, for the watchlist "add" picker and for resolving a
+// user's saved watchlist coin ids back into live price data. Coins outside
+// the top 100 by market cap aren't addable in v1 - a real search-by-name/
+// symbol endpoint is a fast-follow, not fabricated here.
+export async function getAllTrackedCoins(): Promise<CoinPrice[]> {
+  return fetchTopCoins();
+}
+
+export async function getCoinsByIds(ids: string[]): Promise<CoinPrice[]> {
+  if (!ids.length) return [];
+  const all = await fetchTopCoins();
+  const byId = new Map(all.map((c) => [c.id, c]));
+  return ids.map((id) => byId.get(id)).filter((c): c is CoinPrice => Boolean(c));
+}

@@ -7,6 +7,7 @@ import IndiaSnapshotCard from "@/components/IndiaSnapshotCard";
 import NextIPOCard from "@/components/NextIPOCard";
 import NewsFeed from "@/components/NewsFeed";
 import LiveBadge from "@/components/LiveBadge";
+import WatchlistCard from "@/components/WatchlistCard";
 
 export default function HomePage() {
   return (
@@ -83,6 +84,7 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-5">
+          <WatchlistCard />
           <div>
             <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
               India markets
