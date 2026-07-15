@@ -3,15 +3,20 @@ import type { Profile } from "@/lib/types";
 import { getViewerRole } from "@/lib/admin";
 import { setBanned, setModerator } from "./actions";
 
+type ProfileWithEmail = Profile & { user_emails: { email: string } | null };
+
 export default async function AdminUsersPage() {
   const supabase = await createClient();
   const viewer = await getViewerRole();
 
+  // user_emails is a separate, admin-only-readable table (see schema.sql) -
+  // profiles itself is publicly readable, so email is deliberately kept out
+  // of that table to avoid exposing every user's address to anon visitors.
   const { data: profiles } = await supabase
     .from("profiles")
-    .select("*")
+    .select("*, user_emails(email)")
     .order("created_at", { ascending: true })
-    .returns<Profile[]>();
+    .returns<ProfileWithEmail[]>();
 
   const users = profiles ?? [];
 
@@ -21,6 +26,7 @@ export default async function AdminUsersPage() {
         <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
           <tr>
             <th className="px-4 py-2.5 font-medium">User</th>
+            <th className="px-4 py-2.5 font-medium">Email</th>
             <th className="px-4 py-2.5 font-medium">Karma</th>
             <th className="px-4 py-2.5 font-medium">Joined</th>
             <th className="px-4 py-2.5 font-medium">Role</th>
@@ -34,6 +40,7 @@ export default async function AdminUsersPage() {
             return (
               <tr key={u.id}>
                 <td className="px-4 py-3 font-medium text-slate-900">{u.username}</td>
+                <td className="px-4 py-3 text-slate-500">{u.user_emails?.email ?? "—"}</td>
                 <td className="px-4 py-3 text-slate-600">{u.karma}</td>
                 <td className="px-4 py-3 text-slate-500">
                   {new Date(u.created_at).toLocaleDateString("en-IN")}

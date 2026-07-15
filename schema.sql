@@ -127,6 +127,7 @@ begin
     coalesce(new.raw_user_meta_data->>'username', split_part(new.email, '@', 1)) || '_' || substr(new.id::text, 1, 4),
     coalesce(new.raw_user_meta_data->>'username', split_part(new.email, '@', 1))
   );
+  insert into public.user_emails (id, email) values (new.id, new.email);
   return new;
 end;
 $$;
@@ -158,4 +159,16 @@ create policy "moderators can update reports" on public.reports for update using
   exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_moderator or p.is_admin))
 ) with check (
   exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_moderator or p.is_admin))
+);
+
+-- Admin-only email lookup (added when the admin Users page needed emails).
+-- Kept out of public.profiles because that table has a public-read policy;
+-- a bare email column there would leak every user's address to anon visitors.
+create table if not exists public.user_emails (
+  id uuid primary key references public.profiles(id) on delete cascade,
+  email text not null
+);
+alter table public.user_emails enable row level security;
+create policy "admins can read user emails" on public.user_emails for select using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
 );
