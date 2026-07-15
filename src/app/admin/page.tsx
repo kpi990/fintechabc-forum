@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getSignupTrend, getPostTrend, getCommentTrend, getTopBoards } from "@/lib/stats";
+import DailyBarChart from "@/components/DailyBarChart";
 
 export default async function AdminOverviewPage() {
   const supabase = await createClient();
@@ -12,6 +14,10 @@ export default async function AdminOverviewPage() {
     removedPosts,
     comments,
     openReports,
+    signupTrend,
+    postTrend,
+    commentTrend,
+    topBoards,
   ] = await Promise.all([
     supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase.from("profiles").select("*", { count: "exact", head: true }).eq("is_banned", true),
@@ -23,6 +29,10 @@ export default async function AdminOverviewPage() {
     supabase.from("posts").select("*", { count: "exact", head: true }).eq("is_removed", true),
     supabase.from("comments").select("*", { count: "exact", head: true }),
     supabase.from("reports").select("*", { count: "exact", head: true }).eq("resolved", false),
+    getSignupTrend(30),
+    getPostTrend(30),
+    getCommentTrend(30),
+    getTopBoards(5),
   ]);
 
   const stats = [
@@ -53,6 +63,47 @@ export default async function AdminOverviewPage() {
             <div className="mt-0.5 text-xs text-muted">{s.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+          Last 30 days
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <DailyBarChart data={signupTrend} label="Signups" />
+          <DailyBarChart data={postTrend} label="Posts" />
+          <DailyBarChart data={commentTrend} label="Comments" />
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+          Top boards
+        </h2>
+        {topBoards.length ? (
+          <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-line bg-white/5 text-xs uppercase tracking-wide text-muted">
+                <tr>
+                  <th className="px-4 py-2.5 font-medium">Board</th>
+                  <th className="px-4 py-2.5 font-medium">Posts</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {topBoards.map((b) => (
+                  <tr key={b.slug}>
+                    <td className="px-4 py-2.5 font-medium text-slate-50">{b.name}</td>
+                    <td className="px-4 py-2.5 text-muted">{b.postCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="rounded-xl border border-line bg-surface p-4 text-sm text-muted">
+            No boards with posts yet.
+          </p>
+        )}
       </div>
     </div>
   );

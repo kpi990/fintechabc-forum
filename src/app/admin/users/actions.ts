@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getViewerRole } from "@/lib/admin";
+import { logAdminAction } from "@/lib/auditLog";
 
 async function assertAdmin() {
   const viewer = await getViewerRole();
@@ -18,6 +19,12 @@ export async function setBanned(targetUserId: string, banned: boolean) {
   if (targetUserId === viewer.userId) throw new Error("Cannot ban your own account");
   const supabase = await createClient();
   await supabase.from("profiles").update({ is_banned: banned }).eq("id", targetUserId);
+  await logAdminAction({
+    actorId: viewer.userId,
+    action: banned ? "ban_user" : "unban_user",
+    targetType: "user",
+    targetId: targetUserId,
+  });
   revalidatePath("/admin/users");
   revalidatePath("/admin");
 }
@@ -27,14 +34,40 @@ export async function setModerator(targetUserId: string, isModerator: boolean) {
   if (targetUserId === viewer.userId) throw new Error("Cannot change your own role");
   const supabase = await createClient();
   await supabase.from("profiles").update({ is_moderator: isModerator }).eq("id", targetUserId);
+  await logAdminAction({
+    actorId: viewer.userId,
+    action: isModerator ? "promote_moderator" : "demote_moderator",
+    targetType: "user",
+    targetId: targetUserId,
+  });
   revalidatePath("/admin/users");
   revalidatePath("/admin");
+}
+
+// Admin promotion is a materially bigger grant than moderator (full access
+// to Users, Boards, and every other admin-only surface), so this exists as
+// its own action rather than folding into setModerator - keeps the audit
+// log entries distinct and makes the self-protection check explicit here.
+export async function setAdmin(targetUserId: string, isAdmin: boolean) {
+  const viewer = await assertAdmin();
+  if (targetUserId === viewer.userId) throw new Error("Cannot change your own role");
+  const supabase = await createClient();
+  await supabase.from("profiles").update({ is_admin: isAdmin }).eq("id", targetUserId);
+  await logAdminAction({
+    actorId: viewer.userId,
+    action: isAdmin ? "promote_admin" : "demote_admin",
+    targetType: "user",
+    targetId: targetUserId,
+  });
+  revalidatePath("/admin/users");
+  revalidatePath("/admin");
+  revalidatePath(`/admin/users/${targetUserId}`);
 }
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]{3,20}$/;
 
 export async function setUsername(targetUserId: string, formData: FormData) {
-  await assertAdmin();
+  const viewer = await assertAdmin();
 
   const raw = String(formData.get("username") ?? "").trim();
 
@@ -59,6 +92,14 @@ export async function setUsername(targetUserId: string, formData: FormData) {
         : "Couldn't update username. Please try again.";
     redirect("/admin/users?error=" + encodeURIComponent(message));
   }
+
+  await logAdminAction({
+    actorId: viewer.userId,
+    action: "rename_user",
+    targetType: "user",
+    targetId: targetUserId,
+    detail: { newUsername: raw },
+  });
 
   revalidatePath("/admin/users");
   revalidatePath("/admin");

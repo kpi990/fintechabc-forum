@@ -16,9 +16,11 @@ export type Board = {
   name: string;
   description: string | null;
   is_paid: boolean;
+  is_archived: boolean;
   stripe_price_id: string | null;
   coin_id: string | null;
   created_at: string;
+  posts?: { count: number }[];
 };
 
 export type Post = {
@@ -54,8 +56,23 @@ export type Report = {
   comment_id: string | null;
   reason: string;
   resolved: boolean;
+  resolved_by: string | null;
+  resolved_at: string | null;
+  resolution: "removed" | "dismissed" | null;
   created_at: string;
   profiles?: Pick<Profile, "username"> | null;
   posts?: Pick<Post, "id" | "title" | "body" | "is_removed"> | null;
   comments?: Pick<Comment, "id" | "body" | "is_removed" | "post_id"> | null;
+  resolver?: Pick<Profile, "username"> | null;
+};
+
+export type AdminAction = {
+  id: string;
+  actor_id: string | null;
+  action: string;
+  target_type: string;
+  target_id: string | null;
+  detail: Record<string, unknown> | null;
+  created_at: string;
+  profiles?: Pick<Profile, "username"> | null;
 };

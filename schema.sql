@@ -190,3 +190,37 @@ create policy "users manage their own watchlist" on public.watchlist_items for a
 ) with check (
   auth.uid() = user_id
 );
+
+-- Admin console revamp: audit log, board archiving, resolved-report history.
+alter table public.boards add column if not exists is_archived boolean not null default false;
+
+create policy "admins can create boards" on public.boards for insert
+  with check (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin));
+
+create policy "admins can update boards" on public.boards for update using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
+) with check (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin)
+);
+
+alter table public.reports add column if not exists resolved_by uuid references public.profiles(id) on delete set null;
+alter table public.reports add column if not exists resolved_at timestamptz;
+alter table public.reports add column if not exists resolution text check (resolution in ('removed', 'dismissed'));
+
+create table if not exists public.admin_actions (
+  id uuid primary key default gen_random_uuid(),
+  actor_id uuid references public.profiles(id) on delete set null,
+  action text not null,
+  target_type text not null,
+  target_id text,
+  detail jsonb,
+  created_at timestamptz not null default now()
+);
+alter table public.admin_actions enable row level security;
+
+create policy "admins and moderators can read audit log" on public.admin_actions for select using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_admin or p.is_moderator))
+);
+create policy "admins and moderators can write audit log entries" on public.admin_actions for insert with check (
+  auth.uid() = actor_id and exists (select 1 from public.profiles p where p.id = auth.uid() and (p.is_admin or p.is_moderator))
+);
