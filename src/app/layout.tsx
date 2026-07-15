@@ -60,6 +60,7 @@ const FOOTER_COLUMNS: { heading: string; links: { href: string; label: string }[
     heading: "Explore",
     links: [
       { href: "/markets", label: "Markets" },
+      { href: "/credit-cards", label: "Credit Cards" },
       { href: "/news", label: "News" },
       { href: "/community", label: "Community" },
     ],
