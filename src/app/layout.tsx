@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import MobileTopBar from "@/components/MobileTopBar";
+import TopNav from "@/components/TopNav";
 import LogoIcon from "@/components/LogoIcon";
 
 const geistSans = Geist({
@@ -101,13 +100,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <div className="flex min-h-screen flex-1 flex-col">
-            <MobileTopBar />
-            <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">{children}</main>
+        <div className="flex min-h-screen flex-col">
+          <TopNav />
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">{children}</main>
 
-            <footer className="border-t border-line bg-surface">
+          <footer className="border-t border-line bg-surface">
               <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
                 <div className="grid gap-8 sm:grid-cols-[2fr_1fr_1fr]">
                   <div>
@@ -115,7 +112,7 @@ export default function RootLayout({
                       <LogoIcon size={28} />
                       <span className="text-[15px] font-semibold tracking-tight">
                         <span className="text-slate-50">fintech</span>
-                        <span className="text-accent">abc</span>
+                        <span className="bg-gradient-to-r from-accent to-accent-2 bg-clip-text text-transparent">abc</span>
                       </span>
                     </div>
                     <p className="mt-3 max-w-xs text-sm text-muted">
@@ -154,9 +151,8 @@ export default function RootLayout({
                     </a>
                   </span>
                 </div>
-              </div>
-            </footer>
-          </div>
+            </div>
+          </footer>
         </div>
       </body>
     </html>
