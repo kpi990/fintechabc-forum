@@ -3,6 +3,7 @@ import MarketTicker from "@/components/MarketTicker";
 import CryptoMovers from "@/components/CryptoMovers";
 import BrandBadge from "@/components/BrandBadge";
 import RangeBar from "@/components/RangeBar";
+import LiveBadge from "@/components/LiveBadge";
 import TradingViewChart from "@/components/TradingViewChart";
 import {
   ASOF_DATE,
@@ -299,9 +300,12 @@ export default function MarketsPage() {
 
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            Global crypto — live
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+              Global crypto
+            </h2>
+            <LiveBadge mode="live" />
+          </div>
           <SourceLink label="CoinGecko API (live)" url="https://www.coingecko.com/en/api" />
         </div>
         <MarketTicker />
