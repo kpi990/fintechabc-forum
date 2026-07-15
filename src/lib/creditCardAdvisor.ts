@@ -10,7 +10,12 @@
 
 import { creditCards } from "@/lib/creditCards";
 
-export const ADVISOR_MODEL = "claude-haiku-4-5-20251001";
+// Verify this is still a current, available model in your OpenAI account
+// (console.openai.com/docs/models) before relying on this in production -
+// model names/availability change over time and this is picked for cost/
+// quality balance on a bounded Q&A task, not hard-verified against a live
+// account from here.
+export const ADVISOR_MODEL = "gpt-4o-mini";
 
 // Hard caps to bound cost/abuse on a public, unauthenticated endpoint.
 export const MAX_TURNS = 8; // messages (user+assistant combined) per conversation

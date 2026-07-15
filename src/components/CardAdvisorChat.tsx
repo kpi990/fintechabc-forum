@@ -86,7 +86,7 @@ export default function CardAdvisorChat() {
             <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-3 sm:rounded-t-2xl">
               <div>
                 <div className="text-sm font-semibold text-slate-50">Card advisor</div>
-                <div className="text-xs text-faint">Powered by Claude — informational only</div>
+                <div className="text-xs text-faint">Powered by ChatGPT — informational only</div>
               </div>
               <button
                 onClick={() => setOpen(false)}

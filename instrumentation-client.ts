@@ -12,5 +12,6 @@ initBotId({
     { path: "/coin/*/new", method: "POST" },
     { path: "/post/*", method: "POST" },
     { path: "/api/vote", method: "POST" },
+    { path: "/api/card-advisor", method: "POST" },
   ],
 });

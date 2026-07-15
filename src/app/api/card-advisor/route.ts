@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { checkBotId } from "botid/server";
 import { checkLimit, getClientIp } from "@/lib/rateLimit";
 import {
@@ -14,6 +14,7 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 
 export async function POST(request: Request) {
   const verification = await checkBotId();
+  console.log("[botid] /api/card-advisor", JSON.stringify(verification));
   if (verification.isBot) {
     return NextResponse.json({ error: "Request blocked" }, { status: 403 });
   }
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Too many requests, try again shortly" }, { status: 429 });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json(
       { error: "Advisor is not configured yet" },
       { status: 503 }
@@ -67,18 +68,19 @@ export async function POST(request: Request) {
 
   const forceRecommendationNow = messages.length >= MAX_TURNS - 1;
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   try {
-    const response = await anthropic.messages.create({
+    const response = await openai.chat.completions.create({
       model: ADVISOR_MODEL,
       max_tokens: 350,
-      system: buildSystemPrompt(forceRecommendationNow),
-      messages: messages.map((m) => ({ role: m.role, content: m.content })),
+      messages: [
+        { role: "system", content: buildSystemPrompt(forceRecommendationNow) },
+        ...messages.map((m) => ({ role: m.role, content: m.content })),
+      ],
     });
 
-    const textBlock = response.content.find((b) => b.type === "text");
-    const rawText = textBlock && textBlock.type === "text" ? textBlock.text : "";
+    const rawText = response.choices[0]?.message?.content ?? "";
 
     if (!rawText) {
       return NextResponse.json({ error: "Advisor gave an empty response" }, { status: 502 });
@@ -88,7 +90,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ reply: displayText, recommendedSlug: slug });
   } catch (err) {
-    console.error("[card-advisor] Anthropic API error", err);
+    console.error("[card-advisor] OpenAI API error", err);
     return NextResponse.json({ error: "Advisor is temporarily unavailable" }, { status: 502 });
   }
 }
