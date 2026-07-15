@@ -1,11 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 import { getViewerRole } from "@/lib/admin";
-import { setBanned, setModerator } from "./actions";
+import { setBanned, setModerator, setUsername } from "./actions";
 
 type ProfileWithEmail = Profile & { user_emails: { email: string } | null };
 
-export default async function AdminUsersPage() {
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   const supabase = await createClient();
   const viewer = await getViewerRole();
 
@@ -21,7 +26,13 @@ export default async function AdminUsersPage() {
   const users = profiles ?? [];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+    <div>
+      {error && (
+        <p className="mb-4 rounded-lg bg-down/10 p-3 text-sm text-down ring-1 ring-inset ring-down/20">
+          {error}
+        </p>
+      )}
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
       <table className="w-full text-left text-sm">
         <thead className="border-b border-line bg-white/5 text-xs uppercase tracking-wide text-muted">
           <tr>
@@ -39,7 +50,27 @@ export default async function AdminUsersPage() {
             const isSelf = viewer?.userId === u.id;
             return (
               <tr key={u.id}>
-                <td className="px-4 py-3 font-medium text-slate-50">{u.username}</td>
+                <td className="px-4 py-3">
+                  <form
+                    action={setUsername.bind(null, u.id)}
+                    className="flex items-center gap-1.5"
+                  >
+                    <input
+                      name="username"
+                      defaultValue={u.username}
+                      minLength={3}
+                      maxLength={20}
+                      pattern="[a-zA-Z0-9_]+"
+                      className="w-32 rounded-md border border-line-strong bg-transparent px-2 py-1 text-sm font-medium text-slate-50 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
+                    <button
+                      className="rounded-md border border-line px-2 py-1 text-xs text-muted transition hover:bg-white/5"
+                      title="Save username"
+                    >
+                      Save
+                    </button>
+                  </form>
+                </td>
                 <td className="px-4 py-3 text-muted">{u.user_emails?.email ?? "—"}</td>
                 <td className="px-4 py-3 text-muted">{u.karma}</td>
                 <td className="px-4 py-3 text-muted">
@@ -90,6 +121,7 @@ export default async function AdminUsersPage() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
