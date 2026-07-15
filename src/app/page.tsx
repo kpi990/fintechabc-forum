@@ -12,10 +12,10 @@ export default function HomePage() {
     <div className="space-y-5">
       <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm sm:p-7">
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-violet-100">
-          Discuss · Share · Grow
+          Ask Better. Build Better. Compound Better.
         </p>
         <h1 className="max-w-lg text-2xl font-semibold tracking-tight sm:text-3xl">
-          Where India talks crypto, markets, and money.
+          Where India&apos;s Financial Community Grows Together.
         </h1>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link

@@ -36,8 +36,8 @@ export default async function Sidebar() {
             <span className="text-slate-900">fintech</span>
             <span className="text-violet-600">abc</span>
           </div>
-          <div className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">
-            Discuss · Share · Grow
+          <div className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.1em] text-slate-400">
+            Ask Better. Build Better. Compound Better.
           </div>
         </div>
       </Link>

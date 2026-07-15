@@ -13,8 +13,9 @@ export default function AboutPage() {
           About fintechabc
         </h1>
         <p className="mt-2 text-slate-600">
-          fintechabc is a community for people who want to talk crypto, markets, and money —
-          built for Indian investors first, with global crypto coverage from day one.
+          Ask better. Build better. Compound better. fintechabc is where India&apos;s financial
+          community grows together — built for Indian investors first, with global crypto
+          coverage from day one.
         </p>
       </div>
 

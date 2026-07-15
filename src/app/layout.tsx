@@ -19,12 +19,12 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://fintechabc.com";
 const SITE_NAME = "fintechabc";
 const SITE_DESCRIPTION =
-  "A community for crypto and financial markets discussion — live global crypto prices, verified news, and India market snapshots (IPOs, F&O, loan rates, insurance), built for Indian investors.";
+  "Ask better. Build better. Compound better. Where India's financial community grows together — live global crypto prices, verified news, and India market snapshots (IPOs, F&O, loan rates, insurance).";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "fintechabc — crypto & finance community",
+    default: "fintechabc — Where India's Financial Community Grows Together",
     template: "%s | fintechabc",
   },
   description: SITE_DESCRIPTION,
@@ -42,12 +42,12 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "fintechabc — crypto & finance community",
+    title: "fintechabc — Where India's Financial Community Grows Together",
     description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "fintechabc — crypto & finance community",
+    title: "fintechabc — Where India's Financial Community Grows Together",
     description: SITE_DESCRIPTION,
   },
   alternates: {
@@ -119,8 +119,8 @@ export default function RootLayout({
                       </span>
                     </div>
                     <p className="mt-3 max-w-xs text-sm text-slate-500">
-                      A community for crypto and financial markets — built for Indian investors,
-                      with global crypto coverage.
+                      Ask better. Build better. Compound better. Where India&apos;s financial
+                      community grows together.
                     </p>
                   </div>
 

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "fintechabc — crypto & finance community";
+export const alt = "fintechabc — Where India's Financial Community Grows Together";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -41,10 +41,10 @@ export default function OpengraphImage() {
           fintechabc
         </div>
         <div style={{ fontSize: 28, color: "#ede9fe", marginTop: 16, display: "flex" }}>
-          Discuss · Share · Grow
+          Ask Better. Build Better. Compound Better.
         </div>
         <div style={{ fontSize: 22, color: "#ede9fe", marginTop: 24, display: "flex" }}>
-          Crypto & finance community for India
+          Where India&apos;s Financial Community Grows Together.
         </div>
       </div>
     ),
