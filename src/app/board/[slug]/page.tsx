@@ -56,20 +56,20 @@ export default async function BoardPage({
       <div className="mb-6 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
               {board.name}
             </h1>
             {board.is_paid && (
-              <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+              <span className="inline-flex items-center rounded-full bg-warn/10 px-2.5 py-0.5 text-xs font-medium text-warn ring-1 ring-inset ring-warn/20">
                 Paid
               </span>
             )}
           </div>
-          {board.description && <p className="mt-1 text-sm text-slate-500">{board.description}</p>}
+          {board.description && <p className="mt-1 text-sm text-muted">{board.description}</p>}
         </div>
         <Link
           href={`/board/${slug}/new`}
-          className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-violet-500"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-violet-400"
         >
           New post
         </Link>
@@ -79,17 +79,17 @@ export default async function BoardPage({
         {(posts as Post[] | null)?.map((post) => (
           <div
             key={post.id}
-            className="flex gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+            className="flex gap-4 rounded-xl border border-line bg-surface p-4 shadow-sm transition hover:shadow-md"
           >
             <VoteButtons targetType="post" targetId={post.id} initialScore={post.score} />
             <div className="flex-1">
               <Link
                 href={`/post/${post.id}`}
-                className="font-medium text-slate-900 transition hover:text-violet-600"
+                className="font-medium text-slate-50 transition hover:text-accent"
               >
                 {post.title}
               </Link>
-              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
                 <Avatar username={post.profiles?.username ?? "?"} />
                 <span>{post.profiles?.username ?? "[deleted]"}</span>
               </div>
@@ -97,7 +97,7 @@ export default async function BoardPage({
           </div>
         ))}
         {!posts?.length && (
-          <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+          <p className="rounded-xl border border-dashed border-line-strong bg-surface p-8 text-center text-sm text-muted">
             No posts yet — be the first.
           </p>
         )}

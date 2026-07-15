@@ -28,15 +28,15 @@ export default async function Sidebar() {
   }
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-slate-200 bg-white md:flex">
+    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-line bg-surface md:flex">
       <Link href="/" className="flex items-center gap-2.5 px-5 py-5">
         <LogoIcon size={34} />
         <div className="leading-tight">
           <div className="text-[15px] font-semibold tracking-tight">
-            <span className="text-slate-900">fintech</span>
-            <span className="text-violet-600">abc</span>
+            <span className="text-slate-50">fintech</span>
+            <span className="text-accent">abc</span>
           </div>
-          <div className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.1em] text-slate-400">
+          <div className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.1em] text-faint">
             Ask Better. Build Better. Compound Better.
           </div>
         </div>
@@ -47,7 +47,7 @@ export default async function Sidebar() {
           <Link
             key={link.href}
             href={link.href}
-            className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-violet-50 hover:text-violet-700"
+            className="block rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-accent/10 hover:text-accent"
           >
             {link.label}
           </Link>
@@ -55,22 +55,22 @@ export default async function Sidebar() {
         {profile && (profile.is_moderator || profile.is_admin) && (
           <Link
             href="/admin"
-            className="block rounded-lg px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-50"
+            className="block rounded-lg px-3 py-2 text-sm font-medium text-accent transition hover:bg-accent/10"
           >
             Admin
           </Link>
         )}
       </nav>
 
-      <div className="border-t border-slate-100 p-4">
+      <div className="border-t border-line p-4">
         {profile ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Avatar username={profile.username} />
-              <span className="text-sm text-slate-700">{profile.username}</span>
+              <span className="text-sm text-slate-200">{profile.username}</span>
             </div>
             <form action="/auth/signout" method="post">
-              <button className="text-xs text-slate-400 transition hover:text-slate-700">
+              <button className="text-xs text-faint transition hover:text-slate-200">
                 Sign out
               </button>
             </form>
@@ -79,13 +79,13 @@ export default async function Sidebar() {
           <div className="flex flex-col gap-2">
             <Link
               href="/signup"
-              className="rounded-lg bg-violet-600 px-3 py-2 text-center text-sm font-medium text-white shadow-sm transition hover:bg-violet-500"
+              className="rounded-lg bg-accent px-3 py-2 text-center text-sm font-medium text-white shadow-sm transition hover:bg-violet-400"
             >
               Sign up
             </Link>
             <Link
               href="/login"
-              className="rounded-lg border border-slate-200 px-3 py-2 text-center text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+              className="rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-muted transition hover:bg-white/5"
             >
               Log in
             </Link>

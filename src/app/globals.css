@@ -1,21 +1,70 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------
+   V2 design system: dark-mode-first.
+   Dark is the only theme for this release (see product vision doc) -
+   light mode is a deliberate fast-follow, not built here, to avoid
+   doubling the QA surface on a single redesign pass.
+--------------------------------------------------------------------- */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #0a0e14;
+  --foreground: #e5e9f0;
+
+  --color-surface: #12161f;
+  --color-surface-2: #171c27;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-text-muted: #8b93a3;
+  --color-text-faint: #5b6472;
+
+  --color-accent: #8b5cf6;
+  --color-accent-2: #e879f9;
+  --color-up: #34d399;
+  --color-down: #fb7185;
+  --color-warn: #f59e0b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-line: var(--color-border);
+  --color-line-strong: var(--color-border-strong);
+  --color-muted: var(--color-text-muted);
+  --color-faint: var(--color-text-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-2: var(--color-accent-2);
+  --color-up: var(--color-up);
+  --color-down: var(--color-down);
+  --color-warn: var(--color-warn);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-/* Modern fintech look: consistent light theme regardless of system setting */
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Numeric data reads like a terminal: tabular figures everywhere by default. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Base glass surface - used sparingly (elevated/floating panels), not on
+   every card, so density and glass don't fight each other. */
+.glass {
+  background: rgba(23, 28, 39, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+  color: #fff;
 }
 
 /* Auto-scrolling market ticker (see components/TickerScroller.tsx) */
@@ -32,8 +81,39 @@ body {
   animation: ticker-scroll 30s linear infinite;
 }
 
+/* Card/section entrance - staggered via inline animation-delay per item. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+/* Flash a cell green/red briefly when its value changes. */
+@keyframes flash-up {
+  0% { background-color: rgba(52, 211, 153, 0.25); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-down {
+  0% { background-color: rgba(251, 113, 133, 0.25); }
+  100% { background-color: transparent; }
+}
+.flash-up { animation: flash-up 0.6s ease-out; }
+.flash-down { animation: flash-down 0.6s ease-out; }
+
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track {
+  .ticker-track,
+  .animate-fade-in-up,
+  .flash-up,
+  .flash-down {
     animation: none;
   }
 }

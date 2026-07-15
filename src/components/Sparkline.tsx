@@ -28,7 +28,7 @@ export default function Sparkline({
     })
     .join(" ");
 
-  const color = positive ? "#059669" : "#e11d48";
+  const color = positive ? "#34d399" : "#fb7185";
 
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden="true">

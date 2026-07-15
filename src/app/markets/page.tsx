@@ -27,7 +27,7 @@ function SourceLink({ label, url }: { label: string; url: string }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-xs font-medium text-violet-600 hover:underline"
+      className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:underline"
     >
       Source: {label} ↗
     </a>
@@ -38,8 +38,8 @@ export default function MarketsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Markets</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">Markets</h1>
+        <p className="mt-1 text-sm text-muted">
           India first, global crypto second — every section links to its live source.
         </p>
       </div>
@@ -49,27 +49,27 @@ export default function MarketsPage() {
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
               Nifty &amp; Bank Nifty — India
             </h2>
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+            <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted">
               Snapshot: {fnoSnapshot.asOf}
             </span>
           </div>
           <SourceLink {...fnoSource} />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-slate-900">Nifty 50</span>
+              <span className="font-medium text-slate-50">Nifty 50</span>
               <span
-                className={`text-sm font-medium ${fnoSnapshot.nifty.change >= 0 ? "text-emerald-600" : "text-rose-600"}`}
+                className={`text-sm font-medium ${fnoSnapshot.nifty.change >= 0 ? "text-up" : "text-down"}`}
               >
                 {fnoSnapshot.nifty.change >= 0 ? "+" : ""}
                 {fnoSnapshot.nifty.change} ({fnoSnapshot.nifty.changePct}%)
               </span>
             </div>
-            <div className="mt-1 text-2xl font-semibold text-slate-900">
+            <div className="mt-1 text-2xl font-semibold text-slate-50">
               {fnoSnapshot.nifty.value.toLocaleString()}
             </div>
             {fnoSnapshot.nifty.low != null && fnoSnapshot.nifty.high != null ? (
@@ -80,22 +80,22 @@ export default function MarketsPage() {
                 positive={fnoSnapshot.nifty.change >= 0}
               />
             ) : (
-              <p className="mt-2 text-[10px] text-slate-400">
+              <p className="mt-2 text-[10px] text-faint">
                 Intraday range not independently verified for today's session.
               </p>
             )}
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-slate-900">Bank Nifty</span>
+              <span className="font-medium text-slate-50">Bank Nifty</span>
               <span
-                className={`text-sm font-medium ${fnoSnapshot.bankNifty.change >= 0 ? "text-emerald-600" : "text-rose-600"}`}
+                className={`text-sm font-medium ${fnoSnapshot.bankNifty.change >= 0 ? "text-up" : "text-down"}`}
               >
                 {fnoSnapshot.bankNifty.change >= 0 ? "+" : ""}
                 {fnoSnapshot.bankNifty.change} ({fnoSnapshot.bankNifty.changePct}%)
               </span>
             </div>
-            <div className="mt-1 text-2xl font-semibold text-slate-900">
+            <div className="mt-1 text-2xl font-semibold text-slate-50">
               {fnoSnapshot.bankNifty.value.toLocaleString()}
             </div>
             {fnoSnapshot.bankNifty.low != null && fnoSnapshot.bankNifty.high != null ? (
@@ -106,30 +106,30 @@ export default function MarketsPage() {
                 positive={fnoSnapshot.bankNifty.change >= 0}
               />
             ) : (
-              <p className="mt-2 text-[10px] text-slate-400">
+              <p className="mt-2 text-[10px] text-faint">
                 Intraday range not independently verified for today's session.
               </p>
             )}
           </div>
         </div>
-        <p className="mt-3 text-xs text-slate-400">{fnoSnapshot.note}</p>
+        <p className="mt-3 text-xs text-faint">{fnoSnapshot.note}</p>
       </section>
 
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
               Upcoming IPOs — India
             </h2>
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+            <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted">
               As of {ASOF_DATE}
             </span>
           </div>
           <SourceLink {...ipoSource} />
         </div>
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-line bg-surface shadow-sm">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+            <thead className="border-b border-line text-xs uppercase tracking-wide text-faint">
               <tr>
                 <th className="px-4 py-3">Company</th>
                 <th className="px-4 py-3">Type</th>
@@ -139,10 +139,10 @@ export default function MarketsPage() {
                 <th className="px-4 py-3">Price / issue size</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {upcomingIPOs.map((ipo) => (
                 <tr key={ipo.name}>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-3 font-medium text-slate-50">
                     <div className="flex items-center gap-2">
                       <BrandBadge name={ipo.name} size={24} />
                       {ipo.name}
@@ -152,17 +152,17 @@ export default function MarketsPage() {
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         ipo.type === "Mainboard"
-                          ? "bg-violet-50 text-violet-700"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-accent/10 text-accent"
+                          : "bg-white/10 text-muted"
                       }`}
                     >
                       {ipo.type}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{ipo.openDate}</td>
-                  <td className="px-4 py-3 text-slate-600">{ipo.closeDate}</td>
-                  <td className="px-4 py-3 text-slate-600">{ipo.listingDate}</td>
-                  <td className="px-4 py-3 text-slate-600">{ipo.issueSize}</td>
+                  <td className="px-4 py-3 text-muted">{ipo.openDate}</td>
+                  <td className="px-4 py-3 text-muted">{ipo.closeDate}</td>
+                  <td className="px-4 py-3 text-muted">{ipo.listingDate}</td>
+                  <td className="px-4 py-3 text-muted">{ipo.issueSize}</td>
                 </tr>
               ))}
             </tbody>
@@ -173,41 +173,41 @@ export default function MarketsPage() {
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
               Home loan rates — India
             </h2>
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+            <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted">
               As of {ASOF_DATE}
             </span>
           </div>
           <SourceLink {...loanRatesSource} />
         </div>
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-line bg-surface shadow-sm">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+            <thead className="border-b border-line text-xs uppercase tracking-wide text-faint">
               <tr>
                 <th className="px-4 py-3">Bank</th>
                 <th className="px-4 py-3">Rate from</th>
                 <th className="px-4 py-3">Rate up to</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {homeLoanRates.map((row) => (
                 <tr key={row.bank}>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-3 font-medium text-slate-50">
                     <div className="flex items-center gap-2">
                       <BrandBadge name={row.bank} size={24} />
                       {row.bank}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-emerald-700">{row.homeLoanFrom}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.homeLoanTo}</td>
+                  <td className="px-4 py-3 text-up">{row.homeLoanFrom}</td>
+                  <td className="px-4 py-3 text-muted">{row.homeLoanTo}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-slate-400">
+        <p className="mt-2 text-xs text-faint">
           Reference rates only, not a quote — actual rate depends on credit score and loan amount.
         </p>
       </section>
@@ -215,39 +215,39 @@ export default function MarketsPage() {
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
               Health insurance — India
             </h2>
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+            <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted">
               As of {ASOF_DATE}
             </span>
           </div>
           <SourceLink {...insuranceSource} />
         </div>
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-line bg-surface shadow-sm">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
+            <thead className="border-b border-line text-xs uppercase tracking-wide text-faint">
               <tr>
                 <th className="px-4 py-3">Insurer</th>
                 <th className="px-4 py-3">Plan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {healthInsurancePlans.map((row) => (
                 <tr key={row.insurer}>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-3 font-medium text-slate-50">
                     <div className="flex items-center gap-2">
                       <BrandBadge name={row.insurer} size={24} />
                       {row.insurer}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{row.plan}</td>
+                  <td className="px-4 py-3 text-muted">{row.plan}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-slate-400">
+        <p className="mt-2 text-xs text-faint">
           Informational only, not personalized insurance advice — see the source link for current claim-settlement ratios.
         </p>
       </section>
@@ -256,7 +256,7 @@ export default function MarketsPage() {
 
       <section>
         <div className="mb-3 flex items-center justify-between gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
             Global crypto — live
           </h2>
           <SourceLink label="CoinGecko API (live)" url="https://www.coingecko.com/en/api" />

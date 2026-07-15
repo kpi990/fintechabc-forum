@@ -100,25 +100,25 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full bg-slate-50 text-slate-900">
+      <body className="min-h-full">
         <div className="flex min-h-screen">
           <Sidebar />
           <div className="flex min-h-screen flex-1 flex-col">
             <MobileTopBar />
             <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">{children}</main>
 
-            <footer className="border-t border-slate-200 bg-white">
+            <footer className="border-t border-line bg-surface">
               <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
                 <div className="grid gap-8 sm:grid-cols-[2fr_1fr_1fr]">
                   <div>
                     <div className="flex items-center gap-2">
                       <LogoIcon size={28} />
                       <span className="text-[15px] font-semibold tracking-tight">
-                        <span className="text-slate-900">fintech</span>
-                        <span className="text-violet-600">abc</span>
+                        <span className="text-slate-50">fintech</span>
+                        <span className="text-accent">abc</span>
                       </span>
                     </div>
-                    <p className="mt-3 max-w-xs text-sm text-slate-500">
+                    <p className="mt-3 max-w-xs text-sm text-muted">
                       Ask better. Build better. Compound better. Where India&apos;s financial
                       community grows together.
                     </p>
@@ -126,7 +126,7 @@ export default function RootLayout({
 
                   {FOOTER_COLUMNS.map((col) => (
                     <div key={col.heading}>
-                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-faint">
                         {col.heading}
                       </div>
                       <ul className="mt-3 space-y-2">
@@ -134,7 +134,7 @@ export default function RootLayout({
                           <li key={link.href}>
                             <Link
                               href={link.href}
-                              className="text-sm text-slate-600 transition hover:text-violet-600"
+                              className="text-sm text-muted transition hover:text-accent"
                             >
                               {link.label}
                             </Link>
@@ -145,11 +145,11 @@ export default function RootLayout({
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-8 flex flex-col gap-3 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
                   <span>© {year} fintechabc. Not financial, investment, or insurance advice.</span>
                   <span>
                     Contact:{" "}
-                    <a href="mailto:hello@fintechabc.com" className="hover:text-violet-600 hover:underline">
+                    <a href="mailto:hello@fintechabc.com" className="hover:text-accent hover:underline">
                       hello@fintechabc.com
                     </a>
                   </span>

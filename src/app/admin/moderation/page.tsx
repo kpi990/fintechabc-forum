@@ -18,7 +18,7 @@ export default async function ModerationPage() {
 
   if (!items.length) {
     return (
-      <p className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
+      <p className="rounded-xl border border-line bg-surface p-6 text-sm text-muted">
         No open reports. New reports on posts or comments will show up here.
       </p>
     );
@@ -32,39 +32,39 @@ export default async function ModerationPage() {
         const alreadyRemoved = target?.is_removed;
 
         return (
-          <div key={report.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+          <div key={report.id} className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+            <div className="mb-2 flex items-center justify-between text-xs text-muted">
               <span>
                 Reported by {report.profiles?.username ?? "[deleted]"} ·{" "}
                 {new Date(report.created_at).toLocaleString("en-IN")}
               </span>
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 font-medium uppercase tracking-wide">
+              <span className="rounded-full bg-white/10 px-2 py-0.5 font-medium uppercase tracking-wide">
                 {isPost ? "Post" : "Comment"}
               </span>
             </div>
 
-            <div className="mb-2 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
+            <div className="mb-2 rounded-lg bg-white/5 p-3 text-sm text-slate-200">
               {target ? (
                 <>
                   {isPost && "title" in target && (
-                    <div className="mb-1 font-medium text-slate-900">{target.title}</div>
+                    <div className="mb-1 font-medium text-slate-50">{target.title}</div>
                   )}
                   <p className="whitespace-pre-wrap">
                     {"body" in target ? target.body : ""}
                   </p>
                   {alreadyRemoved && (
-                    <span className="mt-1 inline-block text-xs font-medium text-rose-600">
+                    <span className="mt-1 inline-block text-xs font-medium text-down">
                       Already removed
                     </span>
                   )}
                 </>
               ) : (
-                <em className="text-slate-400">Content no longer exists</em>
+                <em className="text-faint">Content no longer exists</em>
               )}
             </div>
 
-            <div className="mb-3 text-sm text-slate-600">
-              <span className="font-medium text-slate-800">Reason: </span>
+            <div className="mb-3 text-sm text-muted">
+              <span className="font-medium text-slate-100">Reason: </span>
               {report.reason}
             </div>
 
@@ -78,13 +78,13 @@ export default async function ModerationPage() {
                     target.id
                   )}
                 >
-                  <button className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-rose-500">
+                  <button className="rounded-lg bg-down px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-down/90">
                     Remove content
                   </button>
                 </form>
               )}
               <form action={dismissReport.bind(null, report.id)}>
-                <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50">
+                <button className="rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-muted transition hover:bg-white/5">
                   Dismiss report
                 </button>
               </form>

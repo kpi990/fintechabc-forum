@@ -3,13 +3,16 @@
 // its public API). Rather than fetching/guessing at logo images from
 // unverified sources, this renders a deterministic colored initials badge —
 // same idea as the Avatar component, applied to brand names.
+// Dark-theme palette: bright foreground on a low-opacity tint of the same
+// hue, rather than a light pastel chip (which would read as a bright,
+// out-of-place blob on a dark surface).
 const PALETTE = [
-  ["#7c3aed", "#ede9fe"], // violet
-  ["#0891b2", "#cffafe"], // cyan
-  ["#d97706", "#fef3c7"], // amber
-  ["#059669", "#d1fae5"], // emerald
-  ["#db2777", "#fce7f3"], // pink
-  ["#4f46e5", "#e0e7ff"], // indigo
+  ["#a78bfa", "rgba(124, 58, 237, 0.18)"], // violet
+  ["#22d3ee", "rgba(8, 145, 178, 0.18)"], // cyan
+  ["#fbbf24", "rgba(217, 119, 6, 0.18)"], // amber
+  ["#34d399", "rgba(5, 150, 105, 0.18)"], // emerald
+  ["#f472b6", "rgba(219, 39, 119, 0.18)"], // pink
+  ["#818cf8", "rgba(79, 70, 229, 0.18)"], // indigo
 ];
 
 function hashString(input: string): number {

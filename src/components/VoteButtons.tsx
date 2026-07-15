@@ -32,21 +32,21 @@ export default function VoteButtons({ targetType, targetId, initialScore }: Prop
   }
 
   return (
-    <div className="flex flex-col items-center gap-0.5 rounded-lg border border-slate-200 bg-slate-50 px-1.5 py-1.5">
+    <div className="flex flex-col items-center gap-0.5 rounded-lg border border-line bg-white/5 px-1.5 py-1.5">
       <button
         onClick={() => vote(1)}
         disabled={isPending}
         aria-label="Upvote"
-        className="rounded p-0.5 text-slate-400 transition hover:bg-violet-50 hover:text-violet-600 disabled:opacity-50"
+        className="rounded p-0.5 text-faint transition hover:bg-accent/10 hover:text-accent disabled:opacity-50"
       >
         ▲
       </button>
-      <span className="text-sm font-semibold text-slate-900">{score}</span>
+      <span className="text-sm font-semibold text-slate-50">{score}</span>
       <button
         onClick={() => vote(-1)}
         disabled={isPending}
         aria-label="Downvote"
-        className="rounded p-0.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50"
+        className="rounded p-0.5 text-faint transition hover:bg-down/10 hover:text-down disabled:opacity-50"
       >
         ▼
       </button>

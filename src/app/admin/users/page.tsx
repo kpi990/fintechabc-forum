@@ -21,9 +21,9 @@ export default async function AdminUsersPage() {
   const users = profiles ?? [];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
       <table className="w-full text-left text-sm">
-        <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="border-b border-line bg-white/5 text-xs uppercase tracking-wide text-muted">
           <tr>
             <th className="px-4 py-2.5 font-medium">User</th>
             <th className="px-4 py-2.5 font-medium">Email</th>
@@ -34,51 +34,51 @@ export default async function AdminUsersPage() {
             <th className="px-4 py-2.5 font-medium">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-line">
           {users.map((u) => {
             const isSelf = viewer?.userId === u.id;
             return (
               <tr key={u.id}>
-                <td className="px-4 py-3 font-medium text-slate-900">{u.username}</td>
-                <td className="px-4 py-3 text-slate-500">{u.user_emails?.email ?? "—"}</td>
-                <td className="px-4 py-3 text-slate-600">{u.karma}</td>
-                <td className="px-4 py-3 text-slate-500">
+                <td className="px-4 py-3 font-medium text-slate-50">{u.username}</td>
+                <td className="px-4 py-3 text-muted">{u.user_emails?.email ?? "—"}</td>
+                <td className="px-4 py-3 text-muted">{u.karma}</td>
+                <td className="px-4 py-3 text-muted">
                   {new Date(u.created_at).toLocaleDateString("en-IN")}
                 </td>
                 <td className="px-4 py-3">
                   {u.is_admin ? (
-                    <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700">
+                    <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-medium text-accent">
                       Admin
                     </span>
                   ) : u.is_moderator ? (
-                    <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700">
+                    <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-xs font-medium text-sky-400">
                       Moderator
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-400">Member</span>
+                    <span className="text-xs text-faint">Member</span>
                   )}
                 </td>
                 <td className="px-4 py-3">
                   {u.is_banned ? (
-                    <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">
+                    <span className="rounded-full bg-down/15 px-2 py-0.5 text-xs font-medium text-down">
                       Banned
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-400">Active</span>
+                    <span className="text-xs text-faint">Active</span>
                   )}
                 </td>
                 <td className="px-4 py-3">
                   {isSelf || u.is_admin ? (
-                    <span className="text-xs text-slate-400">—</span>
+                    <span className="text-xs text-faint">—</span>
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       <form action={setBanned.bind(null, u.id, !u.is_banned)}>
-                        <button className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50">
+                        <button className="rounded-lg border border-line px-2.5 py-1 text-xs font-medium text-muted transition hover:bg-white/5">
                           {u.is_banned ? "Unban" : "Ban"}
                         </button>
                       </form>
                       <form action={setModerator.bind(null, u.id, !u.is_moderator)}>
-                        <button className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:bg-slate-50">
+                        <button className="rounded-lg border border-line px-2.5 py-1 text-xs font-medium text-muted transition hover:bg-white/5">
                           {u.is_moderator ? "Remove moderator" : "Make moderator"}
                         </button>
                       </form>

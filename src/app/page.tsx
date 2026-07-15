@@ -6,11 +6,12 @@ import CryptoMovers from "@/components/CryptoMovers";
 import IndiaSnapshotCard from "@/components/IndiaSnapshotCard";
 import NextIPOCard from "@/components/NextIPOCard";
 import NewsFeed from "@/components/NewsFeed";
+import LiveBadge from "@/components/LiveBadge";
 
 export default function HomePage() {
   return (
     <div className="space-y-5">
-      <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm sm:p-7">
+      <section className="rounded-2xl border border-line bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm sm:p-7">
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-violet-100">
           Ask Better. Build Better. Compound Better.
         </p>
@@ -47,10 +48,10 @@ export default function HomePage() {
 
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
                 Latest verified news
               </h3>
-              <Link href="/news" className="text-xs font-medium text-violet-600 hover:underline">
+              <Link href="/news" className="text-xs font-medium text-accent hover:underline">
                 View all →
               </Link>
             </div>
@@ -59,14 +60,17 @@ export default function HomePage() {
 
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                Global crypto — live
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
+                  Global crypto
+                </h3>
+                <LiveBadge mode="live" />
+              </div>
               <a
                 href="https://www.coingecko.com/en/api"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-slate-400 hover:underline"
+                className="text-xs text-faint hover:underline"
               >
                 Source: CoinGecko ↗
               </a>
@@ -80,7 +84,7 @@ export default function HomePage() {
 
         <div className="space-y-5">
           <div>
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
               India markets
             </h3>
             <IndiaSnapshotCard />

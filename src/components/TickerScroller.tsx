@@ -13,15 +13,15 @@ function TickerItem({ coin }: { coin: CoinPrice }) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={coin.image} alt="" width={16} height={16} className="rounded-full" />
       )}
-      <span className="text-xs font-semibold text-slate-500">{coin.symbol}</span>
-      <span className="text-sm font-medium text-slate-900">
+      <span className="text-xs font-semibold text-muted">{coin.symbol}</span>
+      <span className="text-sm font-medium text-slate-50">
         $
         {coin.price.toLocaleString(undefined, {
           minimumFractionDigits: coin.price < 1 ? 4 : 2,
           maximumFractionDigits: coin.price < 1 ? 4 : 2,
         })}
       </span>
-      <span className={`text-xs font-medium ${isUp ? "text-emerald-600" : "text-rose-600"}`}>
+      <span className={`text-xs font-medium ${isUp ? "text-up" : "text-down"}`}>
         {isUp ? "▲" : "▼"} {Math.abs(coin.changePct24h).toFixed(2)}%
       </span>
     </div>
@@ -59,17 +59,17 @@ export default function TickerScroller({ initialCoins }: { initialCoins: CoinPri
 
   return (
     <div
-      className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+      className="group overflow-hidden rounded-xl border border-line bg-surface shadow-sm"
       onMouseEnter={() => (paused.current = true)}
       onMouseLeave={() => (paused.current = false)}
     >
-      <div className="ticker-track flex w-max divide-x divide-slate-100 [animation-play-state:running] group-hover:[animation-play-state:paused]">
-        <div className="flex divide-x divide-slate-100">
+      <div className="ticker-track flex w-max divide-x divide-line [animation-play-state:running] group-hover:[animation-play-state:paused]">
+        <div className="flex divide-x divide-line">
           {coins.map((coin) => (
             <TickerItem key={`a-${coin.id}`} coin={coin} />
           ))}
         </div>
-        <div className="flex divide-x divide-slate-100" aria-hidden="true">
+        <div className="flex divide-x divide-line" aria-hidden="true">
           {coins.map((coin) => (
             <TickerItem key={`b-${coin.id}`} coin={coin} />
           ))}

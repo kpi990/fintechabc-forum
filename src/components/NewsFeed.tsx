@@ -22,10 +22,10 @@ export default async function NewsFeed({
     <div className="mb-8">
       {showHeader && (
         <div className="mb-3 flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
             Verified news
           </h2>
-          <span className="inline-flex items-center rounded-full bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-700 ring-1 ring-inset ring-violet-600/20">
+          <span className="inline-flex items-center rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent ring-1 ring-inset ring-accent/20">
             Live feed
           </span>
         </div>
@@ -37,9 +37,9 @@ export default async function NewsFeed({
             href={item.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-white/10">
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -53,22 +53,22 @@ export default async function NewsFeed({
                   <BrandBadge name={item.source} size={40} />
                 </div>
               )}
-              <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-medium text-slate-700 shadow-sm backdrop-blur">
+              <span className="absolute left-2 top-2 rounded-full bg-surface/90 px-2 py-0.5 text-[10px] font-medium text-slate-200 shadow-sm backdrop-blur">
                 {item.source}
               </span>
             </div>
 
             <div className="flex flex-1 flex-col p-4">
-              <h3 className="font-medium leading-snug text-slate-900 transition group-hover:text-violet-600">
+              <h3 className="font-medium leading-snug text-slate-50 transition group-hover:text-accent">
                 {item.title}
               </h3>
               {item.snippet && (
-                <p className="mt-1.5 line-clamp-2 text-sm text-slate-500">{item.snippet}</p>
+                <p className="mt-1.5 line-clamp-2 text-sm text-muted">{item.snippet}</p>
               )}
-              <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5 text-xs text-slate-400">
+              <div className="mt-3 flex items-center justify-between border-t border-line pt-2.5 text-xs text-faint">
                 <span className="flex items-center gap-1">
                   <BrandBadge name={item.source} size={16} />
-                  <span className="font-medium text-slate-600">
+                  <span className="font-medium text-muted">
                     {SOURCE_DOMAIN[item.source] ?? item.source}
                   </span>
                 </span>

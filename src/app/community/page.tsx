@@ -14,7 +14,7 @@ export default async function CommunityPage() {
 
   return (
     <div>
-      <div className="mb-6 rounded-2xl border border-slate-200 bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm">
+      <div className="mb-6 rounded-2xl border border-line bg-gradient-to-br from-violet-600 to-fuchsia-500 p-6 text-white shadow-sm">
         <h1 className="text-2xl font-semibold tracking-tight">Community boards</h1>
         <p className="mt-1 max-w-lg text-sm text-violet-100">
           Pick a topic and join the conversation — crypto, markets, and personal finance,
@@ -37,7 +37,7 @@ export default async function CommunityPage() {
       </div>
 
       {!boards.length ? (
-        <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+        <p className="rounded-xl border border-dashed border-line-strong bg-surface p-8 text-center text-sm text-muted">
           No boards yet. Run <code>schema.sql</code> in Supabase to seed the starter boards.
         </p>
       ) : (
@@ -46,26 +46,26 @@ export default async function CommunityPage() {
             <Link
               key={board.id}
               href={`/board/${board.slug}`}
-              className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="group flex items-start gap-3 rounded-xl border border-line bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
               <BrandBadge name={board.name} size={40} />
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 font-medium text-slate-900">
+                <div className="flex items-center gap-2 font-medium text-slate-50">
                   <span className="truncate">{board.name}</span>
                   {board.is_paid && (
-                    <span className="shrink-0 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                    <span className="shrink-0 rounded-full bg-warn/10 px-2.5 py-0.5 text-xs font-medium text-warn ring-1 ring-inset ring-warn/20">
                       Paid
                     </span>
                   )}
                 </div>
                 {board.description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-slate-500">{board.description}</p>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted">{board.description}</p>
                 )}
-                <div className="mt-2 text-xs text-slate-400">
+                <div className="mt-2 text-xs text-faint">
                   {board.postCount} {board.postCount === 1 ? "post" : "posts"}
                 </div>
               </div>
-              <span className="shrink-0 text-slate-300 transition group-hover:text-violet-500">
+              <span className="shrink-0 text-faint transition group-hover:text-accent">
                 →
               </span>
             </Link>

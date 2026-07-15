@@ -11,8 +11,8 @@ export default function NewsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Verified news</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">Verified news</h1>
+        <p className="mt-1 text-sm text-muted">
           Headlines pulled live from CoinDesk, Cointelegraph, and Yahoo Finance. Every card links
           straight to the original article on the publisher's site — we don't republish full
           articles, only headlines and a short excerpt.

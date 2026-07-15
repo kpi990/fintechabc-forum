@@ -13,16 +13,16 @@ function MoverRow({ id, symbol, name, price, changePct24h, image, sparkline }: {
           <img src={image} alt="" width={20} height={20} className="shrink-0 rounded-full" />
         )}
         <div className="min-w-0">
-          <div className="font-medium text-slate-900">{symbol}</div>
-          <div className="truncate text-xs text-slate-400">{name}</div>
+          <div className="font-medium text-slate-50">{symbol}</div>
+          <div className="truncate text-xs text-faint">{name}</div>
         </div>
       </div>
       <Sparkline points={sparkline} positive={isUp} />
       <div className="flex shrink-0 flex-col items-end">
-        <span className="text-sm text-slate-700">
+        <span className="text-sm text-slate-200">
           ${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
         </span>
-        <span className={`text-sm font-medium ${isUp ? "text-emerald-600" : "text-rose-600"}`}>
+        <span className={`text-sm font-medium ${isUp ? "text-up" : "text-down"}`}>
           {isUp ? "+" : ""}
           {changePct24h.toFixed(2)}%
         </span>
@@ -41,11 +41,11 @@ export default async function CryptoMovers({
   const { gainers, losers } = await getTopMovers(limit);
 
   const gainersCard = (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-emerald-700">
+    <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-up">
         Top gainers (24h)
       </h3>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-line">
         {gainers.map((c) => (
           <MoverRow key={c.id} {...c} />
         ))}
@@ -54,11 +54,11 @@ export default async function CryptoMovers({
   );
 
   const losersCard = (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-rose-700">
+    <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-down">
         Top losers (24h)
       </h3>
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-line">
         {losers.map((c) => (
           <MoverRow key={c.id} {...c} />
         ))}
