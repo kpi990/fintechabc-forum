@@ -3,6 +3,7 @@ import MarketTicker from "@/components/MarketTicker";
 import CryptoMovers from "@/components/CryptoMovers";
 import BrandBadge from "@/components/BrandBadge";
 import RangeBar from "@/components/RangeBar";
+import TradingViewChart from "@/components/TradingViewChart";
 import {
   ASOF_DATE,
   upcomingIPOs,
@@ -113,6 +114,45 @@ export default function MarketsPage() {
           </div>
         </div>
         <p className="mt-3 text-xs text-faint">{fnoSnapshot.note}</p>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="overflow-hidden rounded-xl border border-line bg-surface p-3 shadow-sm">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Nifty 50 — live chart
+              </span>
+              <a
+                href="https://www.tradingview.com/symbols/NSE-NIFTY/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-faint hover:underline"
+              >
+                via TradingView ↗
+              </a>
+            </div>
+            <TradingViewChart symbol="NSE:NIFTY" height={320} />
+          </div>
+          <div className="overflow-hidden rounded-xl border border-line bg-surface p-3 shadow-sm">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Bank Nifty — live chart
+              </span>
+              <a
+                href="https://www.tradingview.com/symbols/NSE-BANKNIFTY/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-faint hover:underline"
+              >
+                via TradingView ↗
+              </a>
+            </div>
+            <TradingViewChart symbol="NSE:BANKNIFTY" height={320} />
+          </div>
+        </div>
+        <p className="mt-2 text-[10px] text-faint">
+          Charts embedded live from TradingView — data timing depends on TradingView's own
+          exchange licensing, not something we can verify or relabel ourselves.
+        </p>
       </section>
 
       <section>

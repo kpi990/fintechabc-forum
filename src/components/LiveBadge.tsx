@@ -5,7 +5,8 @@
 type Props =
   | { mode: "live"; label?: string }
   | { mode: "updated"; label: string }
-  | { mode: "asof"; label: string; interval: string };
+  | { mode: "asof"; label: string; interval: string }
+  | { mode: "delayed"; minutes: string };
 
 export default function LiveBadge(props: Props) {
   if (props.mode === "live") {
@@ -29,9 +30,22 @@ export default function LiveBadge(props: Props) {
     );
   }
 
+  if (props.mode === "asof") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-faint">
+        As of {props.label} · refreshes every {props.interval}
+      </span>
+    );
+  }
+
+  // "delayed": genuinely polling/updating data, but sourced from a free feed
+  // that lags the real market (see indiaLive.ts) - deliberately NOT styled
+  // like "live" (no pulsing dot) since claiming otherwise would be exactly
+  // the kind of unlabeled-number problem this component exists to prevent.
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-faint">
-      As of {props.label} · refreshes every {props.interval}
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-warn/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-warn">
+      <span className="h-1.5 w-1.5 rounded-full bg-warn" />
+      Delayed ~{props.minutes}
     </span>
   );
 }

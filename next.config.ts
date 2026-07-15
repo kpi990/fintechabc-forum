@@ -21,11 +21,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://s3.tradingview.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' https: data:",
       "font-src 'self' data:",
       "connect-src 'self' https://api.coingecko.com https://*.supabase.co",
+      "frame-src https://s.tradingview.com https://www.tradingview.com",
       "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",
