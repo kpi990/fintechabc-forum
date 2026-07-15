@@ -41,7 +41,7 @@ export default async function AdminAuditPage() {
           No admin actions logged yet.
         </p>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-line bg-surface shadow-sm">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-line bg-white/5 text-xs uppercase tracking-wide text-muted">
               <tr>

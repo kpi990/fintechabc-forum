@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BrandBadge from "@/components/BrandBadge";
+import CardAdvisorChat from "@/components/CardAdvisorChat";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import {
   CREDIT_CARDS_ASOF_DATE,
@@ -55,6 +56,8 @@ export default function CreditCardsPage() {
       </div>
 
       <AffiliateDisclosure links={allApplyLinks} />
+
+      <CardAdvisorChat />
 
       <div className="flex items-center gap-2">
         <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted">

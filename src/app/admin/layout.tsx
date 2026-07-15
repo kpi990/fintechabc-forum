@@ -31,12 +31,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           Signed in as {viewer.username} · {viewer.isAdmin ? "Admin" : "Moderator"}
         </p>
       </div>
-      <div className="mb-6 flex gap-1 border-b border-line">
+      <div className="mb-6 flex gap-1 overflow-x-auto border-b border-line [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tabs.map((tab) => (
           <Link
             key={tab.href}
             href={tab.href}
-            className="rounded-t-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-white/5 hover:text-accent"
+            className="shrink-0 whitespace-nowrap rounded-t-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-white/5 hover:text-accent"
           >
             {tab.label}
           </Link>
