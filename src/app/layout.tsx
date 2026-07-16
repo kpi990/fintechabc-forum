@@ -144,7 +144,7 @@ export default async function RootLayout({
                 </div>
               </div>
               <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-                <div className="grid gap-8 sm:grid-cols-[2fr_1fr_1fr]">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-[2fr_1fr_1fr]">
                   <div>
                     <div className="flex items-center gap-2">
                       <LogoIcon size={28} />

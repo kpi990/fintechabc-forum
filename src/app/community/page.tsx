@@ -44,7 +44,7 @@ export default async function CommunityPage() {
           No boards yet. Run <code>schema.sql</code> in Supabase to seed the starter boards.
         </p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {boards.map((board) => (
             <Link
               key={board.id}

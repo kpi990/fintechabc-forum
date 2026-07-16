@@ -63,7 +63,7 @@ export default function MarketsPage() {
           </div>
           <SourceLink {...fnoSource} />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="font-medium text-slate-50">Nifty 50</span>
@@ -119,7 +119,7 @@ export default function MarketsPage() {
         </div>
         <p className="mt-3 text-xs text-faint">{fnoSnapshot.note}</p>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="overflow-hidden rounded-xl border border-line bg-surface p-3 shadow-sm">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wide text-muted">

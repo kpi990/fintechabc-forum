@@ -73,7 +73,7 @@ export default async function AdminOverviewPage() {
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
           Last 30 days
         </h2>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <DailyBarChart data={signupTrend} label="Signups" />
           <DailyBarChart data={postTrend} label="Posts" />
           <DailyBarChart data={commentTrend} label="Comments" />

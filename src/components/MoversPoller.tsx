@@ -95,7 +95,7 @@ export default function MoversPoller({
   }, [limit]);
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
         <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-up">
           Top gainers (24h)

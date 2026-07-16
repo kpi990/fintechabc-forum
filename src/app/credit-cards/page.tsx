@@ -74,7 +74,7 @@ export default function CreditCardsPage() {
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
               {category}
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {cards.map((card) => {
                 const applyLink = creditCardApplyLinks[card.slug];
                 return (
@@ -130,7 +130,7 @@ export default function CreditCardsPage() {
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
           How to choose
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {howToChoose.map((item) => (
             <div key={item.title} className="rounded-xl border border-line bg-surface p-4 shadow-sm">
               <div className="font-medium text-slate-50">{item.title}</div>

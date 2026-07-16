@@ -43,7 +43,7 @@ export default function HomePage() {
 
       {/* Core of the product + India-first market data, in one balanced grid
           so the right rail isn't left empty under a much taller left column. */}
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <div className="space-y-5 lg:col-span-2">
           <TrendingPosts />
 

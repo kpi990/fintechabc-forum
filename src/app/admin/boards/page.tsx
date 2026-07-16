@@ -30,7 +30,7 @@ export default async function AdminBoardsPage({
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
           Create a new board
         </h2>
-        <form action={createBoard} className="grid gap-3 sm:grid-cols-2">
+        <form action={createBoard} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <input
             name="slug"
             placeholder="slug (e.g. personal-finance)"
@@ -103,7 +103,7 @@ export default async function AdminBoardsPage({
                   </p>
                 </div>
               ) : (
-                <form action={updateBoard.bind(null, board.id)} className="grid gap-2 sm:grid-cols-2">
+                <form action={updateBoard.bind(null, board.id)} className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <input
                     name="name"
                     defaultValue={board.name}
