@@ -60,7 +60,7 @@ export type Report = {
   resolved_at: string | null;
   resolution: "removed" | "dismissed" | null;
   created_at: string;
-  profiles?: Pick<Profile, "username"> | null;
+  reporter?: Pick<Profile, "username"> | null;
   posts?: Pick<Post, "id" | "title" | "body" | "is_removed"> | null;
   comments?: Pick<Comment, "id" | "body" | "is_removed" | "post_id"> | null;
   resolver?: Pick<Profile, "username"> | null;

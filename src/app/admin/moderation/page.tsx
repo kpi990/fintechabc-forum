@@ -13,15 +13,25 @@ export default async function ModerationPage({
 
   const supabase = await createClient();
 
-  const { data: reports } = await supabase
+  const { data: reports, error } = await supabase
     .from("reports")
     .select(
-      "*, profiles(username), posts(id, title, body, is_removed), comments(id, body, is_removed, post_id), resolver:resolved_by(username)"
+      "*, reporter:reporter_id(username), posts(id, title, body, is_removed), comments(id, body, is_removed, post_id), resolver:resolved_by(username)"
     )
     .eq("resolved", showResolved)
     .order(showResolved ? "resolved_at" : "created_at", { ascending: false })
     .limit(showResolved ? 50 : 200)
     .returns<Report[]>();
+
+  // reports has two FKs to profiles (reporter_id, resolved_by) - both embeds
+  // must be explicitly aliased to a specific FK column or PostgREST can't
+  // resolve which relationship to use and errors the whole query. This was
+  // previously swallowed silently (only `data` was destructured), which
+  // made a real ambiguous-embed failure look like "no reports" in the UI -
+  // logging it now so a future regression here is visible instead of silent.
+  if (error) {
+    console.error("[admin/moderation] reports query failed", error);
+  }
 
   const items = reports ?? [];
 
@@ -64,7 +74,7 @@ export default async function ModerationPage({
             <div key={report.id} className="rounded-xl border border-line bg-surface p-4 shadow-sm">
               <div className="mb-2 flex items-center justify-between text-xs text-muted">
                 <span>
-                  Reported by {report.profiles?.username ?? "[deleted]"} ·{" "}
+                  Reported by {report.reporter?.username ?? "[deleted]"} ·{" "}
                   {new Date(report.created_at).toLocaleString("en-IN")}
                 </span>
                 <span className="rounded-full bg-white/10 px-2 py-0.5 font-medium uppercase tracking-wide">
