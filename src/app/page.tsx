@@ -4,7 +4,10 @@ import CommunityStatsBar from "@/components/CommunityStatsBar";
 import TrendingPosts from "@/components/TrendingPosts";
 import CryptoMovers from "@/components/CryptoMovers";
 import IndiaSnapshotCard from "@/components/IndiaSnapshotCard";
-import NextIPOCard from "@/components/NextIPOCard";
+import HomeIPOCard from "@/components/HomeIPOCard";
+import HomeCryptoCard from "@/components/HomeCryptoCard";
+import HomeLoanRatesCard from "@/components/HomeLoanRatesCard";
+import HomeInsuranceCard from "@/components/HomeInsuranceCard";
 import NewsFeed from "@/components/NewsFeed";
 import LiveBadge from "@/components/LiveBadge";
 import WatchlistCard from "@/components/WatchlistCard";
@@ -41,59 +44,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Core of the product + India-first market data, in one balanced grid
-          so the right rail isn't left empty under a much taller left column. */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="space-y-5 lg:col-span-2">
-          <TrendingPosts />
-
-          <div>
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-                Latest verified news
-              </h3>
-              <Link href="/news" className="text-xs font-medium text-accent hover:underline">
-                View all →
-              </Link>
-            </div>
-            <NewsFeed limit={3} showHeader={false} />
-          </div>
-
-          <div>
-            <div className="mb-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-                  Global crypto
-                </h3>
-                <LiveBadge mode="live" />
-              </div>
-              <a
-                href="https://www.coingecko.com/en/api"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-faint hover:underline"
-              >
-                Source: CoinGecko ↗
-              </a>
-            </div>
-            <MarketTicker />
-            <div className="mt-4">
-              <CryptoMovers limit={4} />
-            </div>
-          </div>
+      {/* At a glance: IPOs, today's trade, top cryptos, loan rates, insurance
+          and (for signed-in users) their watchlist - one 3x2 dashboard grid
+          so the highest-value data on the site is visible without a click.
+          Each card teasers real data already backing /markets, no
+          fabricated numbers. grid-cols-1 base is required here (see the
+          site-wide mobile-overflow fix) - relying only on a breakpoint-
+          prefixed grid-cols-N lets the implicit auto track blow out on
+          narrow screens. */}
+      <div>
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+            At a glance
+          </h2>
+          <Link href="/markets" className="text-xs font-medium text-accent hover:underline">
+            Full markets data →
+          </Link>
         </div>
-
-        <div className="space-y-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <HomeIPOCard />
+          <IndiaSnapshotCard />
+          <HomeCryptoCard />
+          <HomeLoanRatesCard />
+          <HomeInsuranceCard />
           <WatchlistCard />
-          <div>
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
-              India markets
-            </h3>
-            <IndiaSnapshotCard />
-          </div>
-          <NextIPOCard />
-          <CommunityStatsBar compact />
         </div>
+      </div>
+
+      {/* Core of the product: community + news + global crypto, full width
+          now that the market-data teasers live in the grid above (avoids
+          duplicating IPO/Nifty content in a side rail). */}
+      <div className="space-y-5">
+        <TrendingPosts />
+
+        <div>
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
+              Latest verified news
+            </h3>
+            <Link href="/news" className="text-xs font-medium text-accent hover:underline">
+              View all →
+            </Link>
+          </div>
+          <NewsFeed limit={3} showHeader={false} />
+        </div>
+
+        <div>
+          <div className="mb-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
+                Global crypto
+              </h3>
+              <LiveBadge mode="live" />
+            </div>
+            <a
+              href="https://www.coingecko.com/en/api"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-faint hover:underline"
+            >
+              Source: CoinGecko ↗
+            </a>
+          </div>
+          <MarketTicker />
+          <div className="mt-4">
+            <CryptoMovers limit={4} />
+          </div>
+        </div>
+
+        <CommunityStatsBar />
       </div>
     </div>
   );
