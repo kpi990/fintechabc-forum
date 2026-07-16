@@ -10,7 +10,27 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 const OPENING_MESSAGE =
   "Hi! I'll ask a few quick questions to find the credit card that fits how you actually spend. First — what matters most to you: travel & lounge access, cashback, everyday shopping rewards, or fuel savings?";
 
+// Flip to true once the OpenAI account behind /api/card-advisor has billing/
+// credit sorted out (it currently 429s with insufficient_quota - confirmed
+// live, not a code bug). Keeping the feature fully built but gated behind
+// this single flag rather than ripping it out, so re-enabling is a one-line
+// change once billing is fixed.
+const CARD_ADVISOR_ENABLED = false;
+
 export default function CardAdvisorChat() {
+  if (!CARD_ADVISOR_ENABLED) {
+    return (
+      <div className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-white/5 px-4 py-2.5 text-sm font-medium text-muted">
+        <span aria-hidden>✨</span>
+        Card advisor — coming soon
+      </div>
+    );
+  }
+
+  return <CardAdvisorChatInner />;
+}
+
+function CardAdvisorChatInner() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "assistant", content: OPENING_MESSAGE },
