@@ -110,6 +110,13 @@ export default async function RootLayout({
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Google AdSense site-ownership verification - public client ID script,
+            required by AdSense on every page to verify and later serve ads. */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1524149039958714"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-full">
         <div className="flex min-h-screen flex-col">

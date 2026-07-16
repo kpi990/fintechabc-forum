@@ -154,3 +154,12 @@ export async function getTopBoards(limit = 5): Promise<TopBoard[]> {
     .slice(0, limit)
     .map((b) => ({ name: b.name, slug: b.slug, postCount: b.postCount }));
 }
+
+export async function getOpenReportCount(): Promise<number> {
+  const supabase = await createClient();
+  const { count } = await supabase
+    .from("reports")
+    .select("*", { count: "exact", head: true })
+    .eq("resolved", false);
+  return count ?? 0;
+}

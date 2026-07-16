@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getSignupTrend, getPostTrend, getCommentTrend, getTopBoards } from "@/lib/stats";
+import {
+  getSignupTrend,
+  getPostTrend,
+  getCommentTrend,
+  getTopBoards,
+  getOpenReportCount,
+} from "@/lib/stats";
 import DailyBarChart from "@/components/DailyBarChart";
 
 export default async function AdminOverviewPage() {
@@ -13,7 +19,7 @@ export default async function AdminOverviewPage() {
     posts,
     removedPosts,
     comments,
-    openReports,
+    openReportCount,
     signupTrend,
     postTrend,
     commentTrend,
@@ -28,7 +34,7 @@ export default async function AdminOverviewPage() {
     supabase.from("posts").select("*", { count: "exact", head: true }),
     supabase.from("posts").select("*", { count: "exact", head: true }).eq("is_removed", true),
     supabase.from("comments").select("*", { count: "exact", head: true }),
-    supabase.from("reports").select("*", { count: "exact", head: true }).eq("resolved", false),
+    getOpenReportCount(),
     getSignupTrend(30),
     getPostTrend(30),
     getCommentTrend(30),
@@ -43,8 +49,6 @@ export default async function AdminOverviewPage() {
     { label: "Removed posts", value: removedPosts.count ?? 0 },
     { label: "Total comments", value: comments.count ?? 0 },
   ];
-
-  const openReportCount = openReports.count ?? 0;
 
   return (
     <div>
