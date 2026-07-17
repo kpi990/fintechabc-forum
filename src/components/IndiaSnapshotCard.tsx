@@ -6,9 +6,9 @@ export default function IndiaSnapshotCard() {
   const { nifty, bankNifty } = fnoSnapshot;
   return (
     <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex flex-col gap-1">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-          India snapshot
+          Today&apos;s trade
         </h3>
         <LiveBadge mode="asof" label={ASOF_DATE} interval="manual review" />
       </div>
