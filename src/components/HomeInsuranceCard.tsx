@@ -40,7 +40,7 @@ export default function HomeInsuranceCard() {
           rel="noopener noreferrer"
           className="text-xs text-faint hover:underline"
         >
-          Source ↗
+          Live data ↗
         </a>
       </div>
       <p className="mt-2 text-[10px] text-faint">

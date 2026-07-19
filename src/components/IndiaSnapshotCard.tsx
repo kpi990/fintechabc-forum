@@ -40,7 +40,7 @@ export default function IndiaSnapshotCard() {
           rel="noopener noreferrer"
           className="text-xs text-faint hover:underline"
         >
-          Source ↗
+          Live data ↗
         </a>
       </div>
     </div>
